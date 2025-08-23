@@ -27,22 +27,22 @@ function Home() {
 
         <h2 className={styles.title}>Подойдет для вас, если:</h2>
         <div className={styles.suggestionsBlock}>
-          <div className={styles.suggestion}>
+          <div className={styles.suggestionOne}>
             <div className={styles.suggestionNumber}>1</div>
             <div className={styles.suggestionText}>
-              Давно хотели попробовать йогу, но не решались начать
+              Давно хотели попробовать йогу,<br />но не решались начать
             </div>
           </div>
-          <div className={styles.suggestion}>
+          <div className={styles.suggestionTwo}>
             <div className={styles.suggestionNumber}>2</div>
-            <div className={styles.suggestionText}>
-              Давно хотели попробовать йогу, но не решались начать
+            <div className={styles.suggestiontextTwo}>
+              Хотите укрепить позвоночник, избавиться<br />от болей в спине и суставах
             </div>
           </div>
-          <div className={styles.suggestion}>
+          <div className={styles.suggestionThree}>
             <div className={styles.suggestionNumber}>3</div>
             <div className={styles.suggestionText}>
-              Давно хотели попробовать йогу, но не решались начать
+              Ищете активность, полезную для тела и души
             </div>
           </div>
         </div>

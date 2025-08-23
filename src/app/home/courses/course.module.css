@@ -24,7 +24,7 @@
   margin-bottom: 60px;
 }
 
-.suggestion {
+.suggestionOne {
   border-radius: 28px;
   opacity: 1;
   padding: 20px;
@@ -32,7 +32,31 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 25px;
+  width: 369px;
+gap: 25px;
+
+}
+.suggestionTwo {
+  border-radius: 28px;
+  opacity: 1;
+  padding: 20px;
+  background: linear-gradient(115.81deg, #151720 34.98%, #1e212e 91.5%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+width:  431px;
+gap: 25px;
+}
+.suggestionThree {
+  border-radius: 28px;
+  opacity: 1;
+  padding: 20px;
+  background: linear-gradient(115.81deg, #151720 34.98%, #1e212e 91.5%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+ width:  327px;
+gap: 25px;
 }
 
 .suggestionNumber {
@@ -47,6 +71,14 @@
   font-size: 24px;
   line-height: 110%; /* Use percentage for line-height */
   width: 268px;
+  color: white;
+}
+
+.suggestiontextTwo{
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 110%; /* Use percentage for line-height */
+  width: 323px;
   color: white;
 }
 
@@ -68,7 +100,7 @@
   position: relative;
   width: 1160px;
 height: 486px;
-  margin-top: 102px;
+  margin-top: 44px;
   margin-bottom: 50px;
   display: flex;
   flex-direction: row;
@@ -77,7 +109,6 @@ height: 486px;
   background: rgba(255, 255, 255, 1);
   border-radius: 30px;
   box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
-  position: relative; 
    z-index: 1;
    padding: 40px;
 }
@@ -100,8 +131,6 @@ line-height: 100%;
 letter-spacing: 0px;
 vertical-align: middle;
 width: 398px;
-height: 120px;
-
 
 }
 
@@ -116,7 +145,7 @@ opacity: 0.6;
     display: flex;
     flex-direction: column;
     gap: 12px;
-     margin-left: 20px; 
+     margin-left: 36px; 
 }
 
 
@@ -155,8 +184,8 @@ width: 437px;
 /* Стили для maskImage */
 .maskImageWrapper {
   position: absolute; /* Позиционируем относительно .footerImage */
-  top: -100px; /* Выравниваем по верхнему краю .footerImage */
-    left: 82px;/* Выравниваем по левому краю .footerImage */
+  top: -110px;
+    left: 24px;/* Выравниваем по левому краю .footerImage */
   z-index: 3; /* Убедимся, что maskImage находится под masklineImage */
   display: flex;
   justify-content: center; /* Центрируем само изображение внутри контейнера */
@@ -165,13 +194,14 @@ width: 437px;
 
 /* Стили для masklineImage */
 .masklineImageWrapper {
- position: absolute;
-    top: 2px;
+position: absolute;
+    top: -6px;
     z-index: 1;
-    display: flex;
+    display: flex
+;
     justify-content: center;
     align-items: center;
-    right: -130px;
+    right: 0px;
 }
 
 .footerImage .maskImageWrapper img {
