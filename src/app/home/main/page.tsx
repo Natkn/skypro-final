@@ -8,7 +8,7 @@ import headerpic from "../../../../public/image/headerpic.svg";
 import Image from "next/image";
 import { getAllCourses } from '@/libs/fitness'; 
 
-interface Course {
+export interface Course {
   _id: string;
   nameRU: string;
   nameEN: string;
