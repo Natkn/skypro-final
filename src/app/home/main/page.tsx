@@ -1,4 +1,4 @@
-// src/app/home/main/page.tsx
+
 'use client';
 
 import  { useState, useEffect } from 'react';
@@ -6,8 +6,7 @@ import styles from "@/app/home/main/page.module.css";
 import Card from '@/components/card/card';
 import headerpic from "../../../../public/image/headerpic.svg";
 import Image from "next/image";
-import Header from '@/components/header/header';
-import { getAllCourses } from '@/libs/fitness'; // Импортируем функцию
+import { getAllCourses } from '@/libs/fitness'; 
 
 interface Course {
   _id: string;
@@ -31,7 +30,7 @@ export default function Home() {
     const loadCourses = async () => {
       setLoading(true);
       try {
-        const coursesData = await getAllCourses(); // Получаем данные из libs/fitness.ts
+        const coursesData = await getAllCourses(); 
         setCourses(coursesData);
       } catch (error: any) {
         setError(error.message);

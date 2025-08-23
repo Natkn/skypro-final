@@ -8,8 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const courses = await getAllCourses();
     res.status(200).json(courses);
-  } catch (e) { // Не указываем тип тут, т.к. TypeScript не знает, что это Error
-    if (e instanceof Error) { // Проверяем, что e - это Error
+  } catch (e) { 
+    if (e instanceof Error) {
       res.status(500).json({ message: e.message });
     } else {
       res.status(500).json({ message: 'An unexpected error occurred' });

@@ -1,4 +1,4 @@
-// libs/fitness.ts
+
 
 interface Course {
   _id: string;
@@ -35,7 +35,7 @@ export async function getAllCourses(): Promise<Course[]> {
       directions: [],
       fitting: [],
       workouts: ["28pa6g", "y9bcd3"],
-      image: "/image/cardTwo.png", // Замените на реальный URL
+      image: "/image/cardTwo.png", 
       duration: "30-45 мин/день",
       complexity: "Средний",
     },
@@ -47,7 +47,7 @@ export async function getAllCourses(): Promise<Course[]> {
       directions: [],
       fitting: [],
       workouts: ["39qb7h", "z0cde4"],
-      image: "/image/cardThree.png", // Замените на реальный URL
+      image: "/image/cardThree.png", 
       duration: "45-60 мин/день",
       complexity: "Сложный",
     },
@@ -59,7 +59,7 @@ export async function getAllCourses(): Promise<Course[]> {
       directions: [],
       fitting: [],
       workouts: ["40rc8i", "a1def5"],
-      image: "/image/cardFour.png", // Замените на реальный URL
+      image: "/image/cardFour.png",
       duration: "60-90 мин/день",
       complexity: "Средний",
     },
@@ -71,7 +71,7 @@ export async function getAllCourses(): Promise<Course[]> {
       directions: [],
       fitting: [],
       workouts: ["51sd9j", "b2efg6"],
-      image: "/image/cardFive.png", // Замените на реальный URL
+      image: "/image/cardFive.png", 
       duration: "45-60 мин/день",
       complexity: "Легкий",
     },

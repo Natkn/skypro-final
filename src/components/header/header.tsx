@@ -1,4 +1,4 @@
-// src/components/Header.tsx
+
 import React from "react";
 import Image from "next/image";
 import styles from "@/components/header/header.module.css";

@@ -1,17 +1,16 @@
-// src/app/home/main/page.tsx
+
 
 import React from 'react';
 import Image from 'next/image';
-import styles from './course.module.css'; // Стили для секции Course
+import styles from './course.module.css'; 
 import yogaImage from '../../../../public/image/skillcard1 .png';
-import Header from '@/components/header/header';
 import courseImage from '../../../../public/image/skillcourse.svg';
 import maskImage from '../../../../public/image/Maskgroup.svg';
 import masklineImage from '../../../../public/image/Maskgroupline.png';
 
 
 function Home() {
-  const srcIcon = '/Sparcle.svg'; // Путь относительно папки public
+ 
 
   return (
 
@@ -19,10 +18,10 @@ function Home() {
       <div className={styles.descriptionBlock}>
  <Image
           className={styles.courseImage}
-          src={yogaImage} // Используем импортированное изображение
+          src={yogaImage} 
           alt="Yoga"
-          width={1160} // Укажите подходящую ширину
-          height={310} // Укажите подходящую высоту
+          width={1160} 
+          height={310} 
         />
 
         <h2 className={styles.title}>Подойдет для вас, если:</h2>
@@ -51,10 +50,10 @@ function Home() {
         <h2 className={styles.title}>Направления</h2>
      <Image
           className={styles.courseImage}
-          src={courseImage} // Используем импортированное изображение
+          src={courseImage} 
           alt="Course"
-          width={1160} // Укажите подходящую ширину
-          height={146} // Укажите подходящую высоту
+          width={1160} 
+          height={146} 
         />
       </div>
       <div className={styles.footerCourseDiscription}>
@@ -72,17 +71,17 @@ function Home() {
         <div className={styles.footerImage}>
           <Image
           className={styles.maskImageWrapper}
-          src={maskImage} // Используем импортированное изображение
+          src={maskImage} 
           alt="Mask"
-          width={543} // Укажите подходящую ширину
-          height={568} // Укажите подходящую высоту
+          width={543} 
+          height={568} 
         />
             <Image
           className={styles.masklineImageWrapper}
-          src={masklineImage} // Используем импортированное изображение
+          src={masklineImage} 
           alt="Maskline"
-          width={1160} // Укажите подходящую ширину
-          height={540} // Укажите подходящую высоту
+          width={1160} 
+          height={540} 
         />
         </div>
       </div>

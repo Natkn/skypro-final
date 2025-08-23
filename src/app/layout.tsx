@@ -1,8 +1,8 @@
-// src/app/layout.tsx
+
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import MainLayout from "./home/layout"; // Убедитесь, что путь к MainLayout верный
+import MainLayout from "./home/layout"; 
 import Header from "@/components/header/header";
 
 const roboto = Roboto({
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} antialiased`}> {/* Исправлено дублирование roboto.variable */}
+      <body className={`${roboto.variable} antialiased`}> 
        <Header/>
        <MainLayout>
           {children}
