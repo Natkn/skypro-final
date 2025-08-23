@@ -1,14 +1,14 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
+import MainLayout from "./home/layout"; // Убедитесь, что путь к MainLayout верный
+import Header from "@/components/header/header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const roboto = Roboto({
+  weight: ['400', '500','600',  '700'],
+  style: ['normal', 'italic'],
+  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
@@ -24,8 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body className={`${roboto.variable} antialiased`}> {/* Исправлено дублирование roboto.variable */}
+       <Header/>
+       <MainLayout>
+          {children}
+        </MainLayout>
       </body>
     </html>
   );
