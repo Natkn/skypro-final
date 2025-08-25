@@ -6,32 +6,26 @@ import styles from "@/app/home/main/page.module.css";
 import Card from '@/components/card/card';
 import headerpic from "../../../../public/image/headerpic.svg";
 import Image from "next/image";
-import { getAllCourses } from '@/libs/fitness'; 
+import { Course } from '@/libs/fitness'; 
+import { useRouter } from 'next/navigation';
+import { getCourses } from '@/app/services/courses/courseApi';
 
-export interface Course {
-  _id: string;
-  nameRU: string;
-  nameEN: string;
-  description: string;
-  directions: string[];
-  fitting: string[];
-  workouts: string[];
-  image: string;
-  duration: string;
-  complexity: string;
-}
+
 
 export default function Home() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+const router = useRouter();
 
-  useEffect(() => {
+useEffect(() => {
     const loadCourses = async () => {
       setLoading(true);
       try {
-        const coursesData = await getAllCourses(); 
-        setCourses(coursesData);
+        const coursesData = await getCourses();
+        // Сортируем курсы по полю order
+        const sortedCourses = [...coursesData].sort((a, b) => a.order - b.order);
+        setCourses(sortedCourses);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -47,6 +41,10 @@ export default function Home() {
       top: 0,
       behavior: "smooth",
     });
+  };
+
+ const handleCourseClick = (courseId: string) => {
+    router.push(`/courses/[courseId]/${courseId}`);// Используем динамический маршрут
   };
 
   if (loading) {
@@ -72,14 +70,17 @@ export default function Home() {
           <section className={styles.cards}>
             <div className={styles.cardsRow}>
               {visibleCourses.map((course) => (
+                 <div key={course._id} onClick={() => handleCourseClick(course._id)} style={{cursor: 'pointer'}}> 
                 <Card
-                _id={course._id}
-                  key={course._id}
-                  image={course.image}
-                  name={course.nameRU}
-                  duration={course.duration}
-                  complexity={course.complexity}
-                />
+                    _id={course._id}
+                    name={course.nameRU}
+                    nameEN={course.nameEN} 
+                    durationInDays={course.durationInDays}
+                    dailyDurationInMinutes={course.dailyDurationInMinutes}
+                    complexity={course.complexity}
+                    order={course.order}
+                  />
+                </div>
               ))}
             </div>
           </section>

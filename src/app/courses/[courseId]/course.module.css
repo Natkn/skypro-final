@@ -176,6 +176,7 @@ text-align: center;
 cursor: pointer;
   border-style: none;
 width: 437px;
+z-index: 15;
 }
 
 
