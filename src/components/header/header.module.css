@@ -31,7 +31,6 @@ letter-spacing: 0px;
 
 
 .loginButton{
-opacity: 1;
 border-radius: 46px;
 border-color: #BCEC30;
 padding-top: 16px;
@@ -55,4 +54,26 @@ cursor: pointer;
     flex-wrap: wrap;
     justify-content: center;
 
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+     position: relative;
+   
+}
+
+.userIcon {
+    border-radius: 50%;
+    margin-right: 26px;
+}
+
+.username {
+    font-weight: bold;
+       margin-right: 18px;
+}
+
+.profileArrow {
+    font-size: 1.5em;
+    cursor: pointer;
 }

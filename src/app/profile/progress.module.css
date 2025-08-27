@@ -1,0 +1,15 @@
+.progressBar {
+    width: 100%;
+    height: 8px; /* Высота полосы прогресса */
+    background-color: #eee; /* Цвет фона */
+    border-radius: 4px;
+    overflow: hidden; /* Чтобы скрыть содержимое, выходящее за границы */
+}
+
+.progressBarFill {
+    height: 100%;
+    background: rgba(0, 193, 255, 1); /* Ваш цвет */
+    width: 0; /* Ширина будет устанавливаться динамически */
+    border-radius: 4px;
+    transition: width 0.3s ease; /* Плавная анимация */
+}

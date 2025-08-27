@@ -43,9 +43,7 @@ useEffect(() => {
     });
   };
 
- const handleCourseClick = (courseId: string) => {
-    router.push(`/courses/[courseId]/${courseId}`);// Используем динамический маршрут
-  };
+
 
   if (loading) {
     return <div>Loading courses...</div>;
@@ -57,6 +55,12 @@ useEffect(() => {
 
   const numCards = 5;
   const visibleCourses = courses.slice(0, numCards);
+
+
+    const handleCourseClick = (courseId: string) => {
+    router.push(`/courses/${courseId}`); // Используем только ID курса
+  };
+
 
   return (
     <>
@@ -70,8 +74,9 @@ useEffect(() => {
           <section className={styles.cards}>
             <div className={styles.cardsRow}>
               {visibleCourses.map((course) => (
-                 <div key={course._id} onClick={() => handleCourseClick(course._id)} style={{cursor: 'pointer'}}> 
+                 <div key={course._id}  onClick={() => handleCourseClick(course._id)} > 
                 <Card
+                height={501}
                     _id={course._id}
                     name={course.nameRU}
                     nameEN={course.nameEN} 

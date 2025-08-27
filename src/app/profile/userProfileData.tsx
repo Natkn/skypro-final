@@ -1,19 +1,37 @@
-// src/components/profile/Profile.tsx
-import React from 'react';
-import styles from './Profile.module.css';
 
-interface ProfileProps {
-  username: string;
-  avatarUrl: string;
+import axios from 'axios';
+import { BASE_URL } from '../helpers/constant';
+
+
+
+interface UserProfile {
+    email: string;
+    selectedCourses: string[];
 }
 
-const Profile: React.FC<ProfileProps> = ({ username, avatarUrl }) => {
-  return (
-    <div className={styles.profileContainer}>
-      <img src={avatarUrl} alt={`Avatar of ${username}`} className={styles.avatar} />
-      <p className={styles.username}>{username}</p>
-    </div>
-  );
-};
+export const getUserProfile = async (): Promise<UserProfile> => {
+    try {
+        const token = localStorage.getItem('authToken'); 
 
-export default Profile;
+        if (!token) {
+            throw new Error("No authentication token found");
+        }
+
+        const response = await axios.get(BASE_URL + '/users/me', {
+            headers: {
+                'Authorization': `Bearer ${token}` 
+            }
+        });
+
+        return response.data;
+    } catch (error: any) {
+        let message = 'Failed to fetch user profile:';
+        if (error.response) {
+            message += error.response.data.message;
+        } else {
+            message += error.message;
+        }
+        console.error(message);
+        throw new Error(message);
+    }
+};

@@ -2,56 +2,33 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import styles from './course.module.css'; 
-import yogaImage from '../../../../public/image/skillcard1 .png';
 import CourseImage from '../../../../public/image/skillcourse.svg';
 import maskImage from '../../../../public/image/Maskgroup.svg';
 import masklineImage from '../../../../public/image/Maskgroupline.png';
 import { useParams } from 'next/navigation';
-import Pilates from '../../../../public/image/skillcard2.png'
-import Image, { StaticImageData } from 'next/image'; 
+import Image from 'next/image'; 
 import { getCourseById } from '@/app/services/courses/courseApi';
+import { getSkillCardImage } from '@/app/helpers/image';
+import { Course } from '@/libs/fitness';
 
-interface Course {
-  _id: string;
-  nameRU: string;
-  nameEN: string;
-  description: string;
-  directions: string[];
-  fitting: string[];
-  workouts: string[];
- image: string; 
-  duration: string;
-  complexity: string;
+interface CourseDetailPageProps {
+ params: { courseId?: string | string[] }
 }
 
 
-const getImageForCourse = (courseName: string): StaticImageData => {
-  switch (courseName) {
-    case 'Йога':
-      return yogaImage;
-    case 'Стретчинг':
-      return Pilates;
-    default:
-      return CourseImage;
-  }
-};
-
-
-function CourseDetailPage() {
+export default function CourseDetailPage({ }: CourseDetailPageProps) {
  
 const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const params = useParams(); // Получаем параметры маршрута
-
-  const { courseId } = params;
+   const { courseId } = useParams();
 
  useEffect(() => {
     const loadCourse = async () => {
       setLoading(true);
       try {
         if (courseId && typeof courseId === 'string') {
-          const courseData = await getCourseById(courseId);
+       const courseData = await getCourseById(courseId);
           setCourse(courseData);
         } else {
           setError('Invalid course ID');
@@ -78,7 +55,9 @@ const [course, setCourse] = useState<Course | null>(null);
     return <div>Course not found.</div>;
   }
 
-   const courseImage: StaticImageData = getImageForCourse(course.nameRU);
+    const skillCardImage = courseId
+    ? getSkillCardImage(Array.isArray(courseId) ? courseId[0] : courseId)
+    : "/image/skillcard1.png";
 
 
   return (
@@ -87,8 +66,8 @@ const [course, setCourse] = useState<Course | null>(null);
       <div className={styles.descriptionBlock}>
  <Image
           className={styles.courseImage}
-          src={course.image} 
-          alt="course.nameRU"
+          src={skillCardImage} 
+          alt="course"
           width={1160} 
           height={310} 
         />
@@ -158,4 +137,3 @@ const [course, setCourse] = useState<Course | null>(null);
   );
 }
 
-export default CourseDetailPage;

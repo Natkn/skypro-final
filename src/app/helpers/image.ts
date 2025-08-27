@@ -15,3 +15,21 @@ export const getImagePath = (courseNameEN: string): string => {
       return "/image/"; 
   }
 };
+
+
+export const getSkillCardImage = (courseId: string): string => {
+  switch (courseId) {
+    case "ab1c3f": 
+      return "/image/skillcard1 .png";
+    case "kfpq8e": 
+      return "/image/skillcard2.png";
+    case "ypox9r": 
+      return "/image/skillcard3.png";
+    case "6i67sm": 
+      return "/image/skillcard4.png";
+    case "q02a6i": 
+      return "/image/skillcard5.png";
+    default:
+      return "/image/skillcard1 .png"; 
+  }
+};
