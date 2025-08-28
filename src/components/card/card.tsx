@@ -1,4 +1,4 @@
-// src/components/card/card.tsx
+
 import React from 'react';
 import styles from './card.module.css';
 import Image from "next/image";
@@ -31,7 +31,7 @@ const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDur
   const router = useRouter();
 
     const handleContinueClick = () => {
-        router.push(`/workout?courseId=${_id}`); // Переход на страницу workout с передачей courseId
+        router.push(`/workout?courseId=${_id}`); 
     };
 
   return (

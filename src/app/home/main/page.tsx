@@ -23,7 +23,6 @@ useEffect(() => {
       setLoading(true);
       try {
         const coursesData = await getCourses();
-        // Сортируем курсы по полю order
         const sortedCourses = [...coursesData].sort((a, b) => a.order - b.order);
         setCourses(sortedCourses);
       } catch (error: any) {
@@ -58,7 +57,7 @@ useEffect(() => {
 
 
     const handleCourseClick = (courseId: string) => {
-    router.push(`/courses/${courseId}`); // Используем только ID курса
+    router.push(`/courses/${courseId}`);
   };
 
 

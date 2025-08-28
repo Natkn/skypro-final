@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import MainLayout from "./home/layout"; 
 import Header from "@/components/header/header";
+import ReduxProvider from "@/store/ReduxProvider";
 
 const roboto = Roboto({
   weight: ['400', '500','600',  '700'],
@@ -24,11 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} antialiased`}> 
+      <body className={`${roboto.variable} antialiased`}>
+        <ReduxProvider>
        <Header/>
        <MainLayout>
           {children}
         </MainLayout>
+        </ReduxProvider> 
       </body>
     </html>
   );

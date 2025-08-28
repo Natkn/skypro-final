@@ -9,7 +9,7 @@
   cursor: pointer;
 }
 
-.cardDetail svg { /* Стилизация иконок */
-  margin-right: 5px; /* Отступ справа от иконки */
-  vertical-align: middle; /* Выравнивание по центру */
+.cardDetail svg { 
+  margin-right: 5px; 
+  vertical-align: middle;
 }

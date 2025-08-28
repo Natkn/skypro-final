@@ -1,4 +1,4 @@
-// src/components/card/card.tsx
+
 'use client';
 import{ useEffect, useState } from 'react';
 import styles from './workout.module.css';
@@ -57,7 +57,7 @@ const searchParams = useSearchParams();
                     refreshToken: refreshToken,
                 };
 
-                const workoutData = await getCourseWorkouts(courseId, token); // Используем обновленную функцию
+                const workoutData = await getCourseWorkouts(courseId, token); 
                 setWorkouts(workoutData);
                 setError(null);
 

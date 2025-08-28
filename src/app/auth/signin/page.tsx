@@ -1,5 +1,5 @@
-// src/components/modal/modal.tsx
-import React, { useState } from 'react';
+ "use client"
+import  { useState } from 'react';
 import styles from './modal.module.css';
 import Image from "next/image";
 import logo from "../../../../public/image/logo.svg";
@@ -54,13 +54,13 @@ const [activeButton, setActiveButton] = useState<'login' | 'register'>('login');
     try {
       const data = { email: login, password };
       const response = await authUser(data);
-      setToken(response.token); // Save the token
-      onClose(); // Close the modal after successful login
+      setToken(response.token); 
+      onClose();
 
-      // Store the token in local storage or cookies as needed
+     
       localStorage.setItem('authToken', response.token); 
       localStorage.setItem('refreshToken', response.refreshToken);
-       onUserLoggedIn({ username: login.split('@')[0], email: login });// Example using localStorage
+       onUserLoggedIn({ username: login.split('@')[0], email: login });
     } catch (error: any) {
       setErrorMessage(error.message || "Произошла ошибка при входе");
     } finally {

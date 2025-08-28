@@ -7,9 +7,11 @@ import maskImage from '../../../../public/image/Maskgroup.svg';
 import masklineImage from '../../../../public/image/Maskgroupline.png';
 import { useParams } from 'next/navigation';
 import Image from 'next/image'; 
-import { getCourseById } from '@/app/services/courses/courseApi';
+import { addCourseToUser, getCourseById } from '@/app/services/courses/courseApi';
 import { getSkillCardImage } from '@/app/helpers/image';
 import { Course } from '@/libs/fitness';
+import { useAppDispatch } from '@/store/store';
+import { addFavoriteCourse } from '@/app/services/feature/courseSlice';
 
 interface CourseDetailPageProps {
  params: { courseId?: string | string[] }
@@ -22,6 +24,24 @@ const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
    const { courseId } = useParams();
+ const dispatch = useAppDispatch();
+
+ const handleAddCourse = async () => {
+    try {
+      if (courseId && typeof courseId === 'string' && course) {
+       
+        console.log("Курс добавлен в избранное");
+       dispatch(addFavoriteCourse(courseId))  
+
+      } else {
+        setError('Invalid course ID');
+      }
+    } catch (error: any) {
+      setError(error.message);
+ 
+    }
+  };
+ 
 
  useEffect(() => {
     const loadCourse = async () => {
@@ -114,7 +134,7 @@ const [course, setCourse] = useState<Course | null>(null);
             <li>упражнения заряжают бодростью</li>
             <li>помогают противостоять стрессам</li>
           </ul>
-          <button className={styles.loginButton}>Добавить курс</button>
+          <button className={styles.loginButton} onClick={handleAddCourse} >Добавить курс</button>
         </div>
         <div className={styles.footerImage}>
           <Image

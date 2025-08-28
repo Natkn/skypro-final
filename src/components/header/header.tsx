@@ -3,7 +3,7 @@ import  { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "@/components/header/header.module.css";
 import logo from "../../../public/image/logo.svg";
-import Modal from '../../app/auth/signin/modal'; 
+import Modal from '../../app/auth/signin/page'; 
 import arrow from "../../../public/image/arrow.svg";
 import ModalProfile from "@/app/profile/modalprofile";
 

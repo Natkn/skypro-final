@@ -9,13 +9,13 @@ margin-bottom: 40px;
 
 }
 
-/* src/app/workout/workout.module.css */
+
 
 .workoutName {
     font-size: 2em;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333; /* Или ваш основной цвет текста */
+    color: #333; 
 }
 
 .workoutTitle {
@@ -37,7 +37,7 @@ margin-bottom: 40px;
 
 .exerciseName {
     font-weight: 500;
-    flex-grow: 1; /* Занимает доступное пространство */
+    flex-grow: 1;
     margin-right: 15px;
     color: #555;
 }
@@ -45,14 +45,14 @@ margin-bottom: 40px;
 .progressContainer {
     display: flex;
     align-items: center;
-    width: 300px; /* Задаем ширину для контейнера прогресса */
+    width: 300px; 
 }
 
 .progressValue {
     margin-left: 10px;
     font-size: 0.9em;
     color: #777;
-    white-space: nowrap; /* Чтобы число не переносилось */
+    white-space: nowrap; 
 }
 
 .fillProgressButtonContainer {

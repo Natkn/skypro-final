@@ -1,9 +1,9 @@
-// src/components/ui/Progress.tsx
+
 import React from 'react';
 import styles from './progress.module.css';
 
 interface ProgressProps {
-    value: number; // Значение прогресса (0-100)
+    value: number; 
 }
 
 const Progress: React.FC<ProgressProps> = ({ value }) => {

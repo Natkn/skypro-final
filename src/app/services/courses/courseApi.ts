@@ -2,6 +2,7 @@ import { BASE_URL } from '@/app/helpers/constant';
 import axios from 'axios';
 import { Course } from '@/libs/fitness';
 import { CardProps } from '@/components/card/card';
+import { UserProfile } from '@/app/profile/page';
 
 
 type courseUserProp = {
@@ -12,7 +13,7 @@ type ApiError = {
   message?: string;
 };
 
-interface WorkoutType {
+export interface WorkoutType {
     _id: string;
     name: string;
     video: string;
@@ -97,6 +98,58 @@ export const getCourseWorkouts = async (
             }
             throw new Error(error.message);
         }
-        throw new Error('An unknown error occurred'); // Всегда возвращайте сообщение об ошибке
+        throw new Error('An unknown error occurred'); 
     }
+};
+
+
+
+const getAuthToken = () => localStorage.getItem('authToken');
+
+export const addCourseToUser = async (courseId: string) => {
+  try {
+    const token = getAuthToken();
+
+    if (!token) {
+      throw new Error('No authentication token found.');
+    }
+
+    const response = await axios.post(`${BASE_URL}/users/me/courses`, 
+      { courseId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'text/plain',
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error('Error adding course to user:', error);
+    throw new Error(error.response?.data?.message || 'Failed to add course.');
+  }
+};
+
+export const getUserProfile = async (): Promise<UserProfile> => {
+  try {
+ 
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token found.');
+    }
+
+    const response = await axios.get(`${BASE_URL}/users/me`, 
+      {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+ console.log('API Response:', response);
+     return response.data.user;
+  } catch (error: any) {
+    console.error('Error fetching user profile:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch user profile.');
+  }
 };

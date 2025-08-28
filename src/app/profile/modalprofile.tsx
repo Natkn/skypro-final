@@ -17,8 +17,8 @@ const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, username, 
 
 
        const handleGoToProfile = () => {
-        router.push('/profile'); // Navigate to the profile page
-        onClose(); // Close the modal after navigation
+        router.push('/profile'); 
+        onClose();
     };
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -51,21 +51,3 @@ const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, username, 
 
 export default ModalProfile;
 
-
-/*
- const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUsername');
-    localStorage.removeItem('authEmail');
-    setUser(null); 
-    closeProfileModal();
-  };
-   <ModalProfile
-        isOpen={isProfileModalOpen}
-        onClose={closeProfileModal}
-        username={user.username}
-        email={user.email}
-        onLogout={handleLogout}
-      />
-
-      */
