@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { getCourseById, getCourseWorkouts, WorkoutType } from '../services/courses/courseApi';
 import Progress from '../profile/progress';
 import { Course } from '@/libs/fitness';
+import ExerciseModal from '@/components/exerciseModal/page';
 
 
 export interface Workout {
@@ -26,7 +27,7 @@ interface ExerciseType {
     progress: number;
 }
 
-export default function WorkoutPage() {
+export default function WorkoutPage(  {_id}:Workout) {
 
     const searchParams = useSearchParams();
     const courseId = searchParams.get('courseId');
@@ -37,6 +38,7 @@ export default function WorkoutPage() {
     const [error, setError] = useState<string | null>(null);
     const [exercisesProgress, setExercisesProgress] = useState<{ [key: string]: number }>({});
  const [courseName, setCourseName] = useState<string | null>(null);
+ const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (selectedWorkoutsString) {
@@ -77,7 +79,7 @@ export default function WorkoutPage() {
                 };
                  try{
 
-          const courseData: Course = await getCourseById(courseId); //  Тут нужен authToken, а не token объект
+          const courseData: Course = await getCourseById(courseId); 
 setCourseName(courseData.nameRU); 
         } catch (courseError){
            console.error("Ошибка при получении данных о курсе: ", courseError);
@@ -111,6 +113,18 @@ setCourseName(courseData.nameRU);
     if (error) {
         return <div>Error: {error}</div>;
     }
+
+
+      const openModal = () => {
+    console.log("openModal called"); 
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    console.log("closeModal called"); 
+    setIsModalOpen(false);
+  };
+
 
     return (
         <div>
@@ -159,9 +173,10 @@ setCourseName(courseData.nameRU);
       );
     })} </div>
    <div className={styles.fillProgressButtonContainer}>
-                        <button className={styles.fillProgressButton} >
+                        <button className={styles.fillProgressButton}  onClick={openModal} >
                             Заполнить свой прогресс
                         </button>
+                         {isModalOpen && <ExerciseModal onClose={closeModal}  _id={_id}/>}
                     </div>
   </div>
                                     ) : (

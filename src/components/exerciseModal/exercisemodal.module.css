@@ -120,7 +120,7 @@ margin-bottom: 48px;
 .checkboxInput:checked + .workoutText::before {
   background-image: url('/image/yesIcon.svg'); 
   border: none; 
-  background-color: #ffffff;
+  background-color: #ffffff; 
 }
 
 

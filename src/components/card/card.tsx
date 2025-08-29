@@ -63,12 +63,12 @@ const handleRemoveClick = async () => {
 
 
    const openModal = () => {
-    console.log("openModal called"); //  ✅ Добавляем console.log
+    console.log("openModal called"); 
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    console.log("closeModal called"); //  ✅ Добавляем console.log
+    console.log("closeModal called"); 
     setIsModalOpen(false);
   };
 
