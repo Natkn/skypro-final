@@ -46,7 +46,7 @@ const courseSlice = createSlice({
     },
     removeFavoriteCourse: (state, action: PayloadAction<string>) => {
       state.favoriteCourses = state.favoriteCourses.filter(
-        (id) => id !== action.payload,
+        (courseId) => courseId !== action.payload
       );
     },
     setCurrentWorkout(state, action: PayloadAction<WorkoutType>) {

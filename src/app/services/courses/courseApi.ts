@@ -102,7 +102,28 @@ export const getCourseWorkouts = async (
     }
 };
 
+export const getUserProfile = async (): Promise<UserProfile> => {
+  try {
+ 
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      throw new Error('No authentication token found.');
+    }
 
+    const response = await axios.get(`${BASE_URL}/users/me`, 
+      {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+ console.log('API Response:', response);
+     return response.data.user;
+  } catch (error: any) {
+    console.error('Error fetching user profile:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch user profile.');
+  }
+};
 
 const getAuthToken = () => localStorage.getItem('authToken');
 
@@ -131,25 +152,24 @@ export const addCourseToUser = async (courseId: string) => {
   }
 };
 
-export const getUserProfile = async (): Promise<UserProfile> => {
+export const removeCourseFromUser = async (courseId: string) => {
   try {
- 
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
+    const token = getAuthToken();
+
+    if (!token) {
       throw new Error('No authentication token found.');
     }
 
-    const response = await axios.get(`${BASE_URL}/users/me`, 
-      {
+    const response = await axios.delete(`${BASE_URL}/users/me/courses/${courseId}`, {
       headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'text/plain', 
       },
     });
- console.log('API Response:', response);
-     return response.data.user;
+
+    return response.data;
   } catch (error: any) {
-    console.error('Error fetching user profile:', error);
-    throw new Error(error.response?.data?.message || 'Failed to fetch user profile.');
+    console.error('Error removing course from user:', error);
+    throw new Error(error.response?.data?.message || 'Failed to remove course.');
   }
 };

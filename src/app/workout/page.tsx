@@ -16,6 +16,7 @@ interface Workout {
     video: string;
     exercises: [];
      progress?: number;
+      onClose: () => void;
 }
 
 interface ExerciseType {

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './card.module.css';
 import Image from "next/image";
 import { getImagePath } from '@/app/helpers/image'; 
@@ -8,6 +8,12 @@ import { CalendarIcon, IconOverPic, ScaleIcon, TimeIcon } from '@/components/car
 import Progress from '@/app/profile/progress';
 import iconMinus from "../../../public/image/iconMinus.svg";
 import { useRouter } from 'next/navigation';
+import { removeFavoriteCourse } from '@/app/services/feature/courseSlice';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { setUserData } from '@/app/services/feature/authSlice';
+import { removeCourseFromUser } from '@/app/services/courses/courseApi';
+import WorkoutModal from '../workoutModal/workoutModal';
+import WorkoutPage from '@/app/workout/page';
 
 export interface CardProps {
   _id: string;
@@ -18,21 +24,49 @@ export interface CardProps {
     from: number;
     to: number;
   };
-  complexity: string;
-    order: number;
-     progress?: number;
-     onContinueClick?: (_id: string) => void;
-      showProgress?: boolean;
-        height?: number; 
+complexity: string;
+order: number;
+progress?: number;
+ onContinueClick?: (_id: string) => void;
+showProgress?: boolean;
+height?: number; 
+onClose: () => void;
+         
 }
 
 const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, complexity, progress = 0,onContinueClick, showProgress = false,  height = 501}) => {
   const imageSrc = getImagePath(nameEN);
   const router = useRouter();
+  const dispatch = useAppDispatch();
+const { userData } = useAppSelector((state) => state.auth);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleContinueClick = () => {
-        router.push(`/workout?courseId=${_id}`); 
-    };
+const handleRemoveClick = async () => {
+    dispatch(removeFavoriteCourse(_id)); 
+    if (userData) { 
+        dispatch(setUserData({
+        ...userData,
+        selectedCourses: userData.selectedCourses.filter(courseId => courseId !== _id),
+      }));
+      try {
+      const response = await removeCourseFromUser(_id);
+      console.log(response.message); 
+    } catch (error: any) {
+      console.error('Error removing course from server:', error.message);
+    }
+    }
+  };
+
+
+   const openModal = () => {
+    console.log("openModal called"); //  ✅ Добавляем console.log
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    console.log("closeModal called"); //  ✅ Добавляем console.log
+    setIsModalOpen(false);
+  };
 
   return (
      <div className={styles.card} style={{ height: `${height}px` }}>
@@ -52,6 +86,7 @@ const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDur
         width={32} 
         height={32} 
         className={styles.cardminus} 
+         onClick={handleRemoveClick}
         
          
       /></div>
@@ -88,8 +123,9 @@ const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDur
                 <p className={styles.cardProgressLabel}>Прогресс: {progress}%</p>
                 <Progress value={progress} /> 
             </div>
-            <button className={styles.cardContinueButton} onClick={handleContinueClick} >Продолжить</button> 
-            </div> 
+            <button className={styles.cardContinueButton} onClick={openModal}>Продолжить</button> 
+              {isModalOpen && <WorkoutModal onClose={closeModal}  _id={_id} />}
+        </div> 
 )}
 </div>   
 </div>
