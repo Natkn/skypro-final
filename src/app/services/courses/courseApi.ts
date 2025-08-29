@@ -20,9 +20,9 @@ export interface WorkoutType {
     exercises: [];
 }
 
-interface tokensType {
+export interface tokensType {
     token: string;
-    refreshToken: string;
+     refreshToken?: string; 
 }
 
 
@@ -99,6 +99,33 @@ export const getCourseWorkouts = async (
             throw new Error(error.message);
         }
         throw new Error('An unknown error occurred'); 
+    }
+};
+
+export const getWorkoutById = async (
+    workoutId: string,
+    token: tokensType,
+): Promise<WorkoutType> => {
+    try {
+        const res = await axios.get(`${BASE_URL}/workouts/${workoutId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token.token}`,
+            },
+        });
+        return res.data;
+    } catch (error) {
+        if (error instanceof Error) {
+            if (axios.isAxiosError(error) && error.response) {
+                const apiErr = error.response.data as ApiError;
+
+                throw new Error(
+                    apiErr.error ?? apiErr.message ?? 'Ошибка загрузки данных тренировки',
+                );
+            }
+            throw new Error(error.message);
+        }
+        throw new Error('An unknown error occurred');
     }
 };
 

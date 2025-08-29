@@ -12,29 +12,33 @@ import { removeFavoriteCourse } from '@/app/services/feature/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setUserData } from '@/app/services/feature/authSlice';
 import { removeCourseFromUser } from '@/app/services/courses/courseApi';
-import WorkoutModal from '../workoutModal/workoutModal';
+import WorkoutModal from '../workoutModal/page';
 import WorkoutPage from '@/app/workout/page';
 
 export interface CardProps {
   _id: string;
   name: string;
+  nameRU: string;     
   nameEN: string;
-  durationInDays: number
+  description?: string; 
+  directions?: string[];
+  fitting?: string[];   
+  workouts?: string[]; 
+  image?: string;
+  durationInDays: number;
   dailyDurationInMinutes: {
     from: number;
     to: number;
   };
-complexity: string;
-order: number;
-progress?: number;
- onContinueClick?: (_id: string) => void;
-showProgress?: boolean;
-height?: number; 
-onClose: () => void;
-         
+  complexity: string;
+  order: number;
+  progress?: number;
+  onContinueClick?: (_id: string) => void;
+  showProgress?: boolean;
+  height?: number;
 }
 
-const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, complexity, progress = 0,onContinueClick, showProgress = false,  height = 501}) => {
+const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, description, complexity, progress = 0,onContinueClick, showProgress = false,  height = 501}) => {
   const imageSrc = getImagePath(nameEN);
   const router = useRouter();
   const dispatch = useAppDispatch();

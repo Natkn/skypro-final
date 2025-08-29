@@ -79,6 +79,7 @@ useEffect(() => {
                     _id={course._id}
                     name={course.nameRU}
                     nameEN={course.nameEN} 
+                     nameRU={course.nameRU} 
                     durationInDays={course.durationInDays}
                     dailyDurationInMinutes={course.dailyDurationInMinutes}
                     complexity={course.complexity}
