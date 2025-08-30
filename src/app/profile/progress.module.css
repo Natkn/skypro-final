@@ -4,6 +4,7 @@
     background-color: #eee; 
     border-radius: 4px;
     overflow: hidden; 
+    margin-top: 10px;
 }
 
 .progressBarFill {

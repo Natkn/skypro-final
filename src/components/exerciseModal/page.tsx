@@ -1,151 +1,150 @@
 'use client';
 
-import { getWorkoutById, WorkoutType } from "@/app/services/courses/courseApi";
 import { useRouter } from "next/navigation";
-import styles from "@/components/workoutModal/workoutModal.module.css";
-import { Workout } from "@/app/workout/page";
+import styles from "@/components/exerciseModal/exercisemodal.module.css";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "@/app/helpers/constant";
+import { getWorkoutById, saveWorkoutProgress } from "@/app/services/courses/courseApi";
+import { ExerciseType } from "@/app/workout/page";
+import SuccessModal from "../modal/page";
 
-type Training= WorkoutType;
 
 interface ExerciseModalProps {
-     
-        _id: string;
-  isOpen?: boolean; 
-  onClose: () => void;
-   trainings?: Training[];
-  loading?: boolean;
+    _id: string;
+    isOpen?: boolean;
+    onClose: () => void;
+      courseId: string;
+  workoutId: string;
 }
 
- type Exercise = {
-   name: string;
-   quantity: number;
-   _id: string;
- };
+interface WorkoutDetails {
+  _id: string;
+  exercises: ExerciseType[];
+}
 
-
-export default function ExerciseModal({_id,onClose}:ExerciseModalProps){
-const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const [selectedWorkouts, setSelectedWorkouts] = useState<string[]>([]);
-  const router = useRouter();
-const [loading, setLoading] = useState<boolean>(true);
-const [error, setError] = useState<string | null>(null);
-
-const handleContinueClick = () => {
-   const selectedWorkoutsString = JSON.stringify(selectedWorkouts);
-     router.push(`/workout?courseId=${_id}&selectedWorkouts=${encodeURIComponent(selectedWorkoutsString)}`);
-  };
-
-   const handleWorkoutSelect = (workoutId: string) => {
-        setSelectedWorkouts(prevSelected => {
-            if (prevSelected.includes(workoutId)) {
-                return prevSelected.filter(id => id !== workoutId);
-            } else {
-                return [...prevSelected, workoutId];
-            }
-        });
+export default function ExerciseModal({ courseId, workoutId,_id, isOpen, onClose }: ExerciseModalProps) {
+    const [exerciseProgress, setExerciseProgress] = useState<{ [questionId: string]: number }>({});
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
+  const [exercises, setExercises] = useState<ExerciseType[]>([]);
+ const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false)
+    const handleInputChange = (questionId: string, value: number) => {
+        setExerciseProgress({ ...exerciseProgress, [questionId]: value });
     };
 
-  useEffect(() => {
-    const fetchWorkoutData = async () => {
-      setLoading(true);
-      setError(null);
+   const handleSaveProgress = async () => {
+    setLoading(true);
+    setError(null);
 
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setError("Необходимо войти в систему для просмотра тренировок.");
-        setLoading(false);
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setError("Необходимо войти в систему.");
+      setLoading(false);
+      return;
+    }
+ console.log('ExerciseModal: courseId', courseId); 
+    console.log('ExerciseModal: workoutId', workoutId);
+    
+    const progressData = exercises.map(exercise => exerciseProgress[exercise._id] || 0);
+
+    try {
+      await saveWorkoutProgress(
+        courseId,
+        workoutId,
+        progressData,
+        { token } 
+      );
+ setShowSuccessMessage(true);
+
+   
+    } catch (error: any) {
+      setError(`Ошибка сохранения прогресса: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+    if (!isOpen) {
+        return null;
+    }
+
+
+    useEffect(() => {
+    const fetchExercises = async () => {
+      if (!workoutId) { 
+        setError('Workout ID is missing.');
         return;
       }
 
-      try {
-        const workoutsResponse = await fetch(`${BASE_URL}/courses/${_id}/workouts`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'text/plain',
-          },
-        });
-        if (!workoutsResponse.ok) {
-          if (workoutsResponse.status === 401) {
-            setError("Ваша сессия истекла. Пожалуйста, войдите снова.");
-          } else {
-            throw new Error(`Error fetching workouts: ${workoutsResponse.statusText}`);
-          }
-        }
-        const workoutsData: Workout[] = await workoutsResponse.json();
-        const workoutsWithExercises: Workout[] = await Promise.all(
-          workoutsData.map(async (workout) => {
-            try {
-              const workoutDetails = await getWorkoutById(workout._id, { token: token }); 
-              return { ...workout, exercises: workoutDetails.exercises }; 
-            } catch (exerciseError: any) {
-              console.error(`Error fetching exercises for workout ${workout._id}:`, exerciseError);
-              return workout; 
-            }
-          })
-        );
+      setLoading(true); 
+      setError(null); 
 
-        setWorkouts(workoutsWithExercises);
-      } catch (err: any) {
-        setError(err.message);
+      try {
+        const authToken = localStorage.getItem('authToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!authToken || !refreshToken) {
+          throw new Error("No authentication tokens found");
+        }
+
+        const token = {
+          token: authToken,
+          refreshToken: refreshToken,
+        };
+        const workoutData: WorkoutDetails = await getWorkoutById(workoutId, token);
+        setExercises(workoutData.exercises);
+
+      } catch (e: any) {
+        setError(e.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchWorkoutData();
-  }, [_id]);
+    if (isOpen) { 
+      fetchExercises();
+    }
+  }, [workoutId, isOpen]);
 
 
-return (
-  <div className={styles.workModalOverlay}>
-    <div className={styles.workModalContent}>
-      <h2 className={styles.modalTitle}>Мой прогресс</h2>
-      <div className={styles.scrollContainer}>
-        {loading && <p>Загрузка тренировок...</p>}
-        {error && <p>Ошибка: {error}</p>}
-        {!loading && !error && (
-          workouts.length === 0 ? (
-            <p>Нет доступных тренировок для этого курса.</p>
-          ) : (
-            <ul className={styles.workoutList}>
-              {workouts.map((workout) => {
-                const nameParts = workout.name.split(" / ");
-                const workoutName = nameParts[0] || workout.name;
-                const workoutDescription = nameParts.length > 1 ? nameParts.slice(1, nameParts.length -1).join(" / ") : "";
+  const handleCloseSuccess = () => {
+    setShowSuccessMessage(false);
+    onClose(); 
+  };
 
-                return (
-                  <li key={workout._id} className={styles.workoutItem}>
-                    <div className={styles.workoutLeft}>
-                      <input type="checkbox" 
-                      name="workout" 
-                      id={`workout-${workout._id}`} 
-                      className={styles.checkboxInput}
-                      checked={selectedWorkouts.includes(workout._id)}
-                      onChange={() => handleWorkoutSelect(workout._id)}
-                      />
-                      <label htmlFor={`workout-${workout._id}`} className={styles.workoutText}>
-                        <div className={styles.workouttextBox}>
-                          <div className={styles.workoutName}>{workoutName}</div>
-                          {workoutDescription && (
-                            <div className={styles.workoutDescription}>{workoutDescription}</div>
-                          )}
-                        </div>
-                      </label>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )
-        )}
-      </div>
-
-      <button className={styles.startButton} onClick={handleContinueClick}>
-        Сохранить
-      </button>
-    </div>
-  </div>
-);
-};
+  
+    return (
+     <div className={styles.workModalOverlay}>
+      <div className={styles.workModalContent}>
+        <h2 className={styles.modalTitle}>Мой прогресс</h2>
+        <div className={styles.scrollContainer}>
+          {loading && <p>Сохранение прогресса...</p>}
+          {error && <p>Ошибка: {error}</p>}
+          {exercises.map((exercise) => (
+            
+            <div key={exercise._id} className={styles.exerciseItem}>
+              <label htmlFor={`question-${exercise._id}`} className={styles.exerciseLabel}>
+                {`Сколько раз вы сделали ${exercise.name.toLowerCase()}?`}
+              </label>
+              <input
+                type="number"
+                id={`question-${exercise._id}`}
+                className={styles.exerciseInput}
+                value={exerciseProgress[exercise._id] || ''}
+                onChange={(e) => handleInputChange(exercise._id, Number(e.target.value))}
+              />
+            </div>
+          ))}
+        </div>
+ 
+                <button className={styles.startButton} onClick={handleSaveProgress}>
+                    Сохранить
+                </button>
+                
+             {showSuccessMessage && 
+                  <SuccessModal onClose={handleCloseSuccess} />
+           }  </div>
+        </div>
+    );
+}

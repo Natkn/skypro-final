@@ -4,7 +4,7 @@ import styles from './card.module.css';
 import Image from "next/image";
 import { getImagePath } from '@/app/helpers/image'; 
 import IconOver from './iconover';
-import { CalendarIcon, IconOverPic, ScaleIcon, TimeIcon } from '@/components/card/icon'; 
+import { CalendarIcon, ScaleIcon, TimeIcon } from '@/components/card/icon'; 
 import Progress from '@/app/profile/progress';
 import iconMinus from "../../../public/image/iconMinus.svg";
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setUserData } from '@/app/services/feature/authSlice';
 import { removeCourseFromUser } from '@/app/services/courses/courseApi';
 import WorkoutModal from '../workoutModal/page';
-import WorkoutPage from '@/app/workout/page';
+
 
 export interface CardProps {
   _id: string;

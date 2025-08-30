@@ -14,23 +14,24 @@
 
 .workModalContent { position: relative; 
 background-color: white;
-padding: 20px;
-border-radius: 5px;
 z-index: 1001;
-width: 460px;
-height: 609px;
+width: 426px;
 border-radius: 30px;
 padding: 40px;
-gap: 48px;
 }
 
 .scrollContainer {
-  width: 380px;  
-  height: 360px;
+  width: 346px;  
+  height: 346px;
   overflow-y: auto; 
   overflow-x: hidden; 
   padding-right: 20px;
   box-sizing: border-box;
+  display: flex
+;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 34px;
 }
 
 .scrollContainer::-webkit-scrollbar {
@@ -152,10 +153,9 @@ letter-spacing: 0px;
 }
 
 .startButton{
-  width: 380px;
+ width: 346px;
 height: 52px;
 border-radius: 46px;
-gap: 10px;
 opacity: 1;
 padding-top: 16px;
 padding-right: 26px;
@@ -166,6 +166,41 @@ border-style: none;
 font-weight: 400;
 font-size: 18px;
 line-height: 110.00000000000001%;
+}
+
+
+.exerciseLabel{
+  font-family: Roboto;
+font-weight: 400;
+font-size: 18px;
+line-height: 110.00000000000001%;
 letter-spacing: 0px;
+}
+
+.exerciseItem{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.exerciseInput{
+  width: 320px;
+height: 52px;
+border-radius: 8px;
+gap: 10px;
+opacity: 1;
+border-width: 1px;
+padding-top: 16px;
+padding-right: 18px;
+padding-bottom: 16px;
+padding-left: 18px;
 
 }
+.exerciseInput::-webkit-outer-spin-button,
+.exerciseInput::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+

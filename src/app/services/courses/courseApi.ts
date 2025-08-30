@@ -200,3 +200,35 @@ export const removeCourseFromUser = async (courseId: string) => {
     throw new Error(error.response?.data?.message || 'Failed to remove course.');
   }
 };
+
+export const saveWorkoutProgress = async (
+  courseId: string,
+  workoutId: string,
+  progressData: number[],
+  token: tokensType,
+): Promise<void> => {
+  try {
+    await axios.patch(
+      `${BASE_URL}/courses/${courseId}/workouts/${workoutId}`,
+      { progressData },
+      {
+        headers: {
+          'Content-Type': 'text/plain',
+          Authorization: `Bearer ${token.token}`,
+        },
+      },
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const apiErr = error.response.data as ApiError;
+
+        throw new Error(
+          apiErr.error ?? apiErr.message ?? 'Ошибка сохранения прогресса тренировки',
+        );
+      }
+      throw new Error(error.message);
+    }
+    throw new Error('An unknown error occurred');
+  }
+};

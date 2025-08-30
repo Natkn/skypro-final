@@ -7,6 +7,7 @@ import { getCourseById, getCourseWorkouts, WorkoutType } from '../services/cours
 import Progress from '../profile/progress';
 import { Course } from '@/libs/fitness';
 import ExerciseModal from '@/components/exerciseModal/page';
+import SuccessModal from '@/components/modal/page';
 
 
 export interface Workout {
@@ -20,7 +21,7 @@ export interface Workout {
     workoutDescription: string;
 }
 
-interface ExerciseType {
+export interface ExerciseType {
     name: string;
     quantity: number;
     _id: string;
@@ -116,14 +117,15 @@ setCourseName(courseData.nameRU);
 
 
       const openModal = () => {
-    console.log("openModal called"); 
+ 
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    console.log("closeModal called"); 
-    setIsModalOpen(false);
+ 
+    setIsModalOpen(false)
   };
+
 
 
     return (
@@ -176,8 +178,18 @@ setCourseName(courseData.nameRU);
                         <button className={styles.fillProgressButton}  onClick={openModal} >
                             Заполнить свой прогресс
                         </button>
-                         {isModalOpen && <ExerciseModal onClose={closeModal}  _id={_id}/>}
+                         {isModalOpen &&
+                          <ExerciseModal 
+                         onClose={closeModal} 
+                           isOpen={isModalOpen} 
+                            courseId={courseId || ""} 
+                            workoutId={workout._id || ""}
+                             _id={_id}
+                             
+                             />}
+                             
                     </div>
+                  
   </div>
                                     ) : (
                                         <p>Нет упражнений для этой тренировки.</p>
