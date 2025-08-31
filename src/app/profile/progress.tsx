@@ -7,7 +7,7 @@ interface ProgressProps {
 }
 
 const Progress: React.FC<ProgressProps> = ({ value }) => {
-    const clampedValue = Math.min(Math.max(value, 40), 100); 
+    const clampedValue = Math.min(Math.max(value, 0), 100); 
 
     return (
         <div className={styles.progressBar}>

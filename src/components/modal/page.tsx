@@ -20,8 +20,9 @@ export default function SuccessModal({ onClose }: SuccessModalProps) {
 
 return (
     <div className={styles.successModal}>
+        <div className={styles.successmodalBox}>
       <p>Ваш прогресс засчитан!</p>
        <Image src={sucess} alt="sucess" width={56} height={56} />
-    </div>
+ </div>   </div>
   );
 }

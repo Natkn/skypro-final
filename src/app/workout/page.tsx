@@ -1,4 +1,3 @@
-
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './workout.module.css';
@@ -28,7 +27,7 @@ export interface ExerciseType {
     progress: number;
 }
 
-export default function WorkoutPage(  {_id}:Workout) {
+export default function WorkoutPage({ _id }: Workout) {
 
     const searchParams = useSearchParams();
     const courseId = searchParams.get('courseId');
@@ -37,75 +36,123 @@ export default function WorkoutPage(  {_id}:Workout) {
     const [selectedWorkouts, setSelectedWorkouts] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [exercisesProgress, setExercisesProgress] = useState<{ [key: string]: number }>({});
- const [courseName, setCourseName] = useState<string | null>(null);
- const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        if (selectedWorkoutsString) {
-            try {
-                const decodedSelectedWorkouts = JSON.parse(decodeURIComponent(selectedWorkoutsString));
-                if (Array.isArray(decodedSelectedWorkouts)) {
-                    setSelectedWorkouts(decodedSelectedWorkouts);
-                } else {
-                    console.error("Invalid selectedWorkouts format in URL");
-                }
-            } catch (error) {
-                console.error("Error parsing selectedWorkouts from URL:", error);
-            }
-        }
-    }, [selectedWorkoutsString]);
+   const [exercisesProgress, setExercisesProgress] = useState<{ [workoutId: string]: { [exerciseName: string]: number } }>({});
+    const [courseName, setCourseName] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false)
+    const [isProgressFilled, setIsProgressFilled] = useState<{ [workoutId: string]: boolean }>({});
+    const [selectedWorkoutId, setSelectedWorkoutId] = useState<string | null>(null);
 
 
-    useEffect(() => {
-        const fetchWorkouts = async () => {
-            if (!courseId) {
-                setError('Course ID is missing.');
-                setLoading(false);
-                return;
-            }
-
-            setLoading(true);
-            try {
-                const authToken = localStorage.getItem('authToken');
-                const refreshToken = localStorage.getItem('refreshToken');
-
-                if (!authToken || !refreshToken) {
-                    throw new Error("No authentication tokens found");
-                }
-
-                const token = {
-                    token: authToken,
-                    refreshToken: refreshToken,
-                };
-                 try{
-
-          const courseData: Course = await getCourseById(courseId); 
-setCourseName(courseData.nameRU); 
-        } catch (courseError){
-           console.error("Ошибка при получении данных о курсе: ", courseError);
-           setError("Не удалось загрузить данные о курсе");
+ useEffect(() => {
+    const fetchData = async () => {
+        if (!courseId) {
+            setError('Course ID is missing.');
+            setLoading(false);
+            return;
         }
 
-                const workoutData = await getCourseWorkouts(courseId, token);
-                setWorkouts(workoutData);
-                setError(null);
+        setLoading(true);
+        try {
+            const authToken = localStorage.getItem('authToken');
+            const refreshToken = localStorage.getItem('refreshToken');
 
-                const initialProgress: { [key: string]: number } = {};
-                workoutData.forEach(workout => {
+            if (!authToken || !refreshToken) {
+                throw new Error("No authentication tokens found");
+            }
 
+            const token = {
+                token: authToken,
+                refreshToken: refreshToken,
+            };
+
+            try {
+                const courseData: Course = await getCourseById(courseId);
+                setCourseName(courseData.nameRU);
+            } catch (courseError) {
+                console.error("Ошибка при получении данных о курсе: ", courseError);
+                setError("Не удалось загрузить данные о курсе");
+            }
+
+            const workoutData = await getCourseWorkouts(courseId, token);
+            setWorkouts(workoutData);
+            setError(null);
+
+
+            const storedProgress = localStorage.getItem(`exercisesProgress-${courseId}`);
+            let initialProgress: { [workoutId: string]: { [exerciseName: string]: number } } = {};
+            if (storedProgress) {
+                try {
+                    initialProgress = JSON.parse(storedProgress);
+                } catch (e: any) {
+                    console.error("Error parsing stored progress:", e);
+                }
+            }
+
+            const storedIsProgressFilled = localStorage.getItem(`isProgressFilled-${courseId}`);
+            let initialIsProgressFilled: { [workoutId: string]: boolean } = {};
+            if (storedIsProgressFilled) {
+                try {
+                    initialIsProgressFilled = JSON.parse(storedIsProgressFilled);
+                } catch (e) {
+                    console.error("Error parsing stored isProgressFilled:", e);
+                }
+            }
+
+            setIsProgressFilled(initialIsProgressFilled);
+
+            workoutData.forEach(workout => {
+                if (!initialProgress[workout._id]) {
+                    initialProgress[workout._id] = {};
+                }
+                workout.exercises.forEach(exercise => {
+                    if (initialProgress[workout._id][exercise.name] === undefined) {
+                        initialProgress[workout._id][exercise.name] = 0;
+                    }
                 });
-                setExercisesProgress(initialProgress);
-            } catch (e: any) {
-                setError(e.message);
-            } finally {
-                setLoading(false);
+            });
+
+            setExercisesProgress(initialProgress);
+
+            if (selectedWorkoutsString) {
+                try {
+                    const decodedSelectedWorkouts = JSON.parse(decodeURIComponent(selectedWorkoutsString));
+                    if (Array.isArray(decodedSelectedWorkouts)) {
+                        setSelectedWorkouts(decodedSelectedWorkouts);
+                    } else {
+                        console.error("Invalid selectedWorkouts format in URL");
+                    }
+                } catch (parseError) {
+                    console.error("Error parsing selectedWorkouts from URL:", parseError);
+                }
             }
-        };
 
-        fetchWorkouts();
-    }, [courseId]);
 
+        } catch (fetchError: any) {
+            setError(fetchError.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchData();
+}, [courseId, selectedWorkoutsString]);
+
+useEffect(() => {
+    if (courseId) {
+        console.log("Сохраняем progress в localStorage для courseId:", courseId, "Data:", exercisesProgress);
+        localStorage.setItem(`exercisesProgress-${courseId}`, JSON.stringify(exercisesProgress));
+    }
+}, [exercisesProgress, courseId]);
+
+    useEffect(() => {
+        if (courseId) {
+            localStorage.setItem(`isProgressFilled-${courseId}`, JSON.stringify(isProgressFilled));
+        }
+    }, [isProgressFilled, courseId]);
+useEffect(() => {
+    console.log("Все ключи в localStorage:", Object.keys(localStorage));
+}, []);
 
     if (loading) {
         return <div>Loading workouts...</div>;
@@ -116,16 +163,52 @@ setCourseName(courseData.nameRU);
     }
 
 
-      const openModal = () => {
- 
-    setIsModalOpen(true);
-  };
+    const openModal = (workoutId: string) => {
+        setSelectedWorkoutId(workoutId);
+        setIsModalOpen(true);
+    };
 
-  const closeModal = () => {
- 
-    setIsModalOpen(false)
-  };
+  const closeModal = (success: boolean, progressData?: number[]) => {
+    setIsModalOpen(false);
+    setShowSuccessMessage(true);
 
+    if (success) {
+        setIsProgressFilled(prevState => ({
+            ...prevState,
+            [selectedWorkoutId!]: true
+        }));
+
+        setTimeout(() => {
+            setShowSuccessMessage(false);
+        }, 2000);
+
+        if (progressData && selectedWorkoutId) {
+            setExercisesProgress(prevState => {
+                const newExercisesProgress = { ...prevState };
+
+               
+                if (!newExercisesProgress[selectedWorkoutId]) {
+                    newExercisesProgress[selectedWorkoutId] = {};
+                }
+
+               
+                const workout = workouts.find(w => w._id === selectedWorkoutId);
+                if (workout) {
+                
+                    workout.exercises.forEach((exercise, index) => {
+                        newExercisesProgress[selectedWorkoutId]![exercise.name] = progressData[index] || 0;
+                    });
+                }
+
+                return newExercisesProgress;
+            });
+        }
+    }
+};
+
+    const handleCloseSuccess = () => {
+        setShowSuccessMessage(false);
+    };
 
 
     return (
@@ -134,7 +217,7 @@ setCourseName(courseData.nameRU);
             {workouts.length > 0 ? (
                 <div>
                     {workouts
-                        .filter(workout => selectedWorkouts.includes (String(workout._id))) 
+                        .filter(workout => selectedWorkouts.includes(String(workout._id)))
                         .map((workout, workoutIndex) => (
                             <div key={workout._id} style={{ marginBottom: '40px' }}>
                                 <iframe
@@ -144,62 +227,68 @@ setCourseName(courseData.nameRU);
                                     title="YouTube video player"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
-                                    style={{borderRadius: '30px'  }}
+                                    style={{ borderRadius: '30px' }}
                                 ></iframe>
 
                                 <div className={styles.exercisesSectionContainer}>
                                     <h3 className={styles.sectionTitle}>Упражнения тренировки {workoutIndex + 2}</h3>
 
-                                   {workout.exercises && workout.exercises.length > 0 ? (
-<div className={styles.exercisesSection}>
-<div className={styles.exercisesBox}>
-    {Array.from({ length: Math.ceil(workout.exercises.length / 3) }, (_, i) => {
-      const startIndex = i * 3;
-      const group = workout.exercises.slice(startIndex, startIndex + 3);
+                                    {workout.exercises && workout.exercises.length > 0 ? (
+                                        <div className={styles.exercisesSection}>
+                                            <div className={styles.exercisesBox}>
+                                                {Array.from({ length: Math.ceil(workout.exercises.length / 3) }, (_, i) => {
+                                                    const startIndex = i * 3;
+                                                    const group = workout.exercises.slice(startIndex, startIndex + 3);
 
-      return (
-        <div key={i} className={styles.exerciseColumn}>
-          {group.map((exercise, exerciseIndex) => (
-            <div key={exerciseIndex} className={styles.exerciseItem}>
-              <div className={styles.exerciseName}> {exercise.name}
-    <span className={styles.progressValue}>  {exercisesProgress[workout.name] || 0}%</span>
-  </div>
-  <div className={styles.progressGroup}>
-    <Progress value={0} />
-                <span className={styles.progressValue}>{exercisesProgress[workout.name]}</span>
-              </div>
-            </div>
-            
-          ))}
-        </div>
-      );
-    })} </div>
-   <div className={styles.fillProgressButtonContainer}>
-                        <button className={styles.fillProgressButton}  onClick={openModal} >
-                            Заполнить свой прогресс
-                        </button>
-                         {isModalOpen &&
-                          <ExerciseModal 
-                         onClose={closeModal} 
-                           isOpen={isModalOpen} 
-                            courseId={courseId || ""} 
-                            workoutId={workout._id || ""}
-                             _id={_id}
-                             
-                             />}
-                             
-                    </div>
-                  
-  </div>
+                                                    return (
+                                                        <div key={i} className={styles.exerciseColumn}>
+                                                            {group.map((exercise, exerciseIndex) => (
+                                                                <div key={exerciseIndex} className={styles.exerciseItem}>
+                                                                    <div className={styles.exerciseName}> {exercise.name}
+                                                                        <span className={styles.progressValue}> {exercisesProgress[workout._id]?.[exercise.name] || 0}%</span>
+                                                                    </div>
+                                                                    <div className={styles.progressGroup}>
+                                                                        <Progress value={exercisesProgress[workout._id]?.[exercise.name] || 0} />
+
+                                                                    </div>
+                                                                </div>
+
+                                                            ))}
+                                                        </div>
+                                                    );
+                                                })} </div>
+                                            <div className={styles.fillProgressButtonContainer}>
+                                                <button
+                                                    className={styles.fillProgressButton}
+                                                    onClick={() => openModal(workout._id)}
+                                                >
+                                                    {isProgressFilled[workout._id] ? "Обновить свой прогресс" : "Заполнить свой прогресс"}
+                                                </button>
+                                                {isModalOpen && selectedWorkoutId === workout._id && (
+                                                    <ExerciseModal
+                                                        onClose={closeModal}
+                                                        isOpen={isModalOpen}
+                                                        courseId={courseId || ""}
+                                                        workoutId={workout._id || ""}
+                                                        _id={_id}
+
+                                                    />
+                                                )}
+                                                {showSuccessMessage &&
+                                                    <SuccessModal onClose={handleCloseSuccess} />
+                                                }
+                                            </div>
+
+                                        </div>
                                     ) : (
                                         <p>Нет упражнений для этой тренировки.</p>
                                     )}
                                 </div>
                             </div>
                         ))}
-                 
+
                 </div>
-                
+
             ) : (
                 <div>No workouts found for this course.</div>
             )}

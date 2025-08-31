@@ -1,3 +1,5 @@
+import { ExerciseType } from "@/app/workout/page";
+
 export interface Course {
   _id: string;
   nameRU: string;
@@ -14,4 +16,16 @@ export interface Course {
     to: number;
   };
   complexity: string;
+}
+
+export interface CourseProgressResponse {
+    courseId: string;
+    courseCompleted: boolean;
+    workoutsProgress: WorkoutProgress[];
+}
+
+export interface WorkoutProgress {
+    workoutId: string;
+    workoutCompleted: boolean;
+    progressData: number[];
 }

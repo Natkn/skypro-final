@@ -6,6 +6,7 @@ import logo from "../../../public/image/logo.svg";
 import Modal from '../../app/auth/signin/page'; 
 import arrow from "../../../public/image/arrow.svg";
 import ModalProfile from "@/app/profile/modalprofile";
+import Link from "next/link";
 
 interface User {
   username: string;
@@ -18,12 +19,15 @@ const Header = () => {
    const [user, setUser] = useState<User | null>(null);
  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); 
 
-    useEffect(() => {
-    const storedUsername = localStorage.getItem('authUsername');
-    const storedEmail = localStorage.getItem('authEmail');
-
-    if (storedUsername && storedEmail) {
-      setUser({ username: storedUsername, email: storedEmail });
+  useEffect(() => {
+    const storedUser = localStorage.getItem('authUser');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser)); 
+      } catch (error) {
+        console.error("Error parsing user data from localStorage:", error);
+       
+      }
     }
   }, []);
 
@@ -35,14 +39,16 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
-    const handleUserRegistered = (userData: User) => {
+  const handleUserRegistered = (userData: User) => {
     setUser(userData);
+    localStorage.setItem('authUser', JSON.stringify(userData)); 
     closeModal();
   };
 
-    const handleUserLoggedIn = (userData: User) => {
-      setUser(userData);
-      closeModal();
+  const handleUserLoggedIn = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('authUser', JSON.stringify(userData)); 
+    closeModal();
   }
 
   const openProfileModal = () => {
@@ -63,11 +69,18 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.logoContainer}>
-        <Image src={logo} alt="Logo" width={220} height={35} />
+           <Link href="/home/main">
+          <Image
+            src={logo} 
+            alt="Logo"
+            width={220}
+            height={35}
+            /></Link>  
       <div className={styles.logoText}>Онлайн-тренировки для занятий дома</div> </div>
     <nav className={styles.nav}>
-        {user ? ( 
+        {user ? (
           <div className={styles.userProfile}>
+        
             <Image
               src="/image/profilephoto.svg" 
               alt="User Icon"

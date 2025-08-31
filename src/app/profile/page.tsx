@@ -25,9 +25,7 @@ export default function Profile() {
     const { allCourses } = useAppSelector((state) => state.courses);
     const { userData } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-    const [progress, setProgress] = useState<{ [courseId: string]: number }>({});
 
-   
     const selectedCourseIds = userData?.selectedCourses || [];
 
     const selectedCourses = filterCoursesByIds(allCourses, selectedCourseIds);
@@ -82,8 +80,7 @@ export default function Profile() {
                                     durationInDays={course.durationInDays}
                                     dailyDurationInMinutes={course.dailyDurationInMinutes}
                                     complexity={course.complexity}
-                                    order={course.order}
-                                    progress={progress[course._id] || 0}
+                                    order={course.order}           
                                     onContinueClick={handleContinueClick}
                                     showProgress={true}
                                 />

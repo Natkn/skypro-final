@@ -1,8 +1,9 @@
 import { BASE_URL } from '@/app/helpers/constant';
 import axios from 'axios';
-import { Course } from '@/libs/fitness';
+import { Course, CourseProgressResponse } from '@/libs/fitness';
 import { CardProps } from '@/components/card/card';
 import { UserProfile } from '@/app/profile/page';
+import { ExerciseType } from '@/app/workout/page';
 
 
 type courseUserProp = {
@@ -17,7 +18,7 @@ export interface WorkoutType {
     _id: string;
     name: string;
     video: string;
-    exercises: [];
+    exercises:ExerciseType [];
 }
 
 export interface tokensType {
@@ -144,7 +145,6 @@ export const getUserProfile = async (): Promise<UserProfile> => {
         'Content-Type': 'application/json',
       },
     });
- console.log('API Response:', response);
      return response.data.user;
   } catch (error: any) {
     console.error('Error fetching user profile:', error);
@@ -231,4 +231,34 @@ export const saveWorkoutProgress = async (
     }
     throw new Error('An unknown error occurred');
   }
+};
+
+export const getCourseProgress = async (
+    courseId: string,
+    token: tokensType,
+): Promise<CourseProgressResponse> => {
+    try {
+        const response = await axios.get<CourseProgressResponse>(
+            `${BASE_URL}/users/me/progress?courseId=${courseId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token.token}`,
+                },
+            },
+        );
+
+        return response.data;
+    } catch (error) {
+        if (error instanceof Error) {
+            if (axios.isAxiosError(error) && error.response) {
+                const apiErr = error.response.data as ApiError;
+
+                throw new Error(
+                    apiErr.error ?? apiErr.message ?? 'Ошибка получения прогресса курса',
+                );
+            }
+            throw new Error(error.message);
+        }
+        throw new Error('An unknown error occurred');
+    }
 };

@@ -11,7 +11,7 @@ import SuccessModal from "../modal/page";
 interface ExerciseModalProps {
     _id: string;
     isOpen?: boolean;
-    onClose: () => void;
+     onClose: (success: boolean, progressData?: number[]) => void;
       courseId: string;
   workoutId: string;
 }
@@ -21,13 +21,12 @@ interface WorkoutDetails {
   exercises: ExerciseType[];
 }
 
-export default function ExerciseModal({ courseId, workoutId,_id, isOpen, onClose }: ExerciseModalProps) {
+export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: ExerciseModalProps) {
     const [exerciseProgress, setExerciseProgress] = useState<{ [questionId: string]: number }>({});
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
- const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false)
+
     const handleInputChange = (questionId: string, value: number) => {
         setExerciseProgress({ ...exerciseProgress, [questionId]: value });
     };
@@ -42,9 +41,7 @@ export default function ExerciseModal({ courseId, workoutId,_id, isOpen, onClose
       setLoading(false);
       return;
     }
- console.log('ExerciseModal: courseId', courseId); 
-    console.log('ExerciseModal: workoutId', workoutId);
-    
+
     const progressData = exercises.map(exercise => exerciseProgress[exercise._id] || 0);
 
     try {
@@ -54,8 +51,8 @@ export default function ExerciseModal({ courseId, workoutId,_id, isOpen, onClose
         progressData,
         { token } 
       );
- setShowSuccessMessage(true);
-
+      console.log("Сохраняем progress на сервере:", courseId, workoutId, progressData);
+   onClose(true, progressData);
    
     } catch (error: any) {
       setError(`Ошибка сохранения прогресса: ${error.message}`);
@@ -108,10 +105,7 @@ export default function ExerciseModal({ courseId, workoutId,_id, isOpen, onClose
   }, [workoutId, isOpen]);
 
 
-  const handleCloseSuccess = () => {
-    setShowSuccessMessage(false);
-    onClose(); 
-  };
+
 
   
     return (
@@ -138,13 +132,11 @@ export default function ExerciseModal({ courseId, workoutId,_id, isOpen, onClose
           ))}
         </div>
  
-                <button className={styles.startButton} onClick={handleSaveProgress}>
+                <button className={styles.startButton} onClick={handleSaveProgress} disabled={loading}>
                     Сохранить
                 </button>
                 
-             {showSuccessMessage && 
-                  <SuccessModal onClose={handleCloseSuccess} />
-           }  </div>
+             </div>
         </div>
     );
 }

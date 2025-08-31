@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './card.module.css';
 import Image from "next/image";
 import { getImagePath } from '@/app/helpers/image'; 
@@ -11,8 +11,10 @@ import { useRouter } from 'next/navigation';
 import { removeFavoriteCourse } from '@/app/services/feature/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setUserData } from '@/app/services/feature/authSlice';
-import { removeCourseFromUser } from '@/app/services/courses/courseApi';
+import { removeCourseFromUser, getCourseProgress } from '@/app/services/courses/courseApi';
 import WorkoutModal from '../workoutModal/page';
+import { WorkoutProgress } from '@/libs/fitness';
+import { roundProgress } from '@/utils/progressUtils';
 
 
 export interface CardProps {
@@ -32,18 +34,21 @@ export interface CardProps {
   };
   complexity: string;
   order: number;
-  progress?: number;
   onContinueClick?: (_id: string) => void;
   showProgress?: boolean;
   height?: number;
 }
 
-const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, description, complexity, progress = 0,onContinueClick, showProgress = false,  height = 501}) => {
+const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, description, complexity,onContinueClick, showProgress = false,  height = 501}) => {
   const imageSrc = getImagePath(nameEN);
   const router = useRouter();
   const dispatch = useAppDispatch();
 const { userData } = useAppSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
 
 const handleRemoveClick = async () => {
     dispatch(removeFavoriteCourse(_id)); 
@@ -54,23 +59,76 @@ const handleRemoveClick = async () => {
       }));
       try {
       const response = await removeCourseFromUser(_id);
-      console.log(response.message); 
     } catch (error: any) {
       console.error('Error removing course from server:', error.message);
     }
     }
   };
 
+    useEffect(() => {
+        const fetchCourseProgress = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const authToken = localStorage.getItem('authToken');
+                const refreshToken = localStorage.getItem('refreshToken');
+
+                if (!authToken || !refreshToken) {
+                    throw new Error("No authentication tokens found");
+                }
+
+                const token = {
+                    token: authToken,
+                    refreshToken: refreshToken,
+                };
+                const courseProgressData = await getCourseProgress(_id, token);
+               let totalProgress = 0;
+if (courseProgressData.workoutsProgress && courseProgressData.workoutsProgress.length > 0) {
+    let totalWorkoutProgress = 0; 
+    const totalWorkouts = courseProgressData.workoutsProgress.length;
+
+    courseProgressData.workoutsProgress.forEach((workout: WorkoutProgress) => {
+        let workoutProgress = 0;
+        if (workout.progressData && workout.progressData.length > 0) {
+            workoutProgress = workout.progressData.reduce((sum, current) => sum + current, 0) / workout.progressData.length;
+        }
+        totalWorkoutProgress += workoutProgress; 
+    });
+
+    totalProgress = (totalWorkoutProgress / totalWorkouts); 
+} else {
+  
+    totalProgress = 0;
+}
+                setProgress(totalProgress);
+
+            } catch (e: any) {
+                setError(e.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (showProgress) {
+            fetchCourseProgress();
+        }
+    }, [_id, showProgress]);
 
    const openModal = () => {
-    console.log("openModal called"); 
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    console.log("closeModal called"); 
     setIsModalOpen(false);
   };
+
+
+     let buttonText = "Продолжить";
+    if (progress === 0) {
+        buttonText = "Начать тренировки";
+    } else if (roundProgress(progress) === 100) {
+        buttonText = "Начать заново";
+    }
 
   return (
      <div className={styles.card} style={{ height: `${height}px` }}>
@@ -124,10 +182,10 @@ const handleRemoveClick = async () => {
              {showProgress && (
 <div className={styles.cardprofileProgress}>
  <div className={styles.cardProgress}>
-                <p className={styles.cardProgressLabel}>Прогресс: {progress}%</p>
+                <p className={styles.cardProgressLabel}>Прогресс: {roundProgress(progress)}%</p>
                 <Progress value={progress} /> 
             </div>
-            <button className={styles.cardContinueButton} onClick={openModal}>Продолжить</button> 
+            <button className={styles.cardContinueButton} onClick={openModal}>{buttonText}</button> 
               {isModalOpen && <WorkoutModal onClose={closeModal}  _id={_id} />}
         </div> 
 )}
