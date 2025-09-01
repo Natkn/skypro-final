@@ -7,6 +7,8 @@ import Modal from '../../app/auth/signin/page';
 import arrow from "../../../public/image/arrow.svg";
 import ModalProfile from "@/app/profile/modalprofile";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from "@/store/store";
 
 interface User {
   username: string;
@@ -18,7 +20,8 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
    const [user, setUser] = useState<User | null>(null);
  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); 
-
+  const router = useRouter();
+  
   useEffect(() => {
     const storedUser = localStorage.getItem('authUser');
     if (storedUser) {
@@ -58,12 +61,12 @@ const Header = () => {
   const closeProfileModal = () => {
     setIsProfileModalOpen(false);
   };
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUsername');
-    localStorage.removeItem('authEmail');
+
+ const handleLogout = () => {
+    localStorage.removeItem('authUser');
     setUser(null); 
-    closeProfileModal();
+    closeProfileModal()
+    router.push('/home/main');
   };
 
   return (

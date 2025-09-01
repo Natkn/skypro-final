@@ -79,27 +79,29 @@ export default function WorkoutPage({ _id }: Workout) {
             setError(null);
 
 
-            const storedProgress = localStorage.getItem(`exercisesProgress-${courseId}`);
-            let initialProgress: { [workoutId: string]: { [exerciseName: string]: number } } = {};
-            if (storedProgress) {
-                try {
-                    initialProgress = JSON.parse(storedProgress);
-                } catch (e: any) {
-                    console.error("Error parsing stored progress:", e);
+             const storedProgress = localStorage.getItem(`exercisesProgress-${courseId}`);
+                let initialProgress: { [workoutId: string]: { [exerciseName: string]: number } } = {};
+                if (storedProgress) {
+                    try {
+                        initialProgress = JSON.parse(storedProgress);
+                    } catch (e: any) {
+                        console.error("Error parsing stored progress:", e);
+                    }
                 }
-            }
 
-            const storedIsProgressFilled = localStorage.getItem(`isProgressFilled-${courseId}`);
-            let initialIsProgressFilled: { [workoutId: string]: boolean } = {};
-            if (storedIsProgressFilled) {
-                try {
-                    initialIsProgressFilled = JSON.parse(storedIsProgressFilled);
-                } catch (e) {
-                    console.error("Error parsing stored isProgressFilled:", e);
+                setExercisesProgress(initialProgress);
+
+                 // Load isProgressFilled from localStorage
+                const storedIsProgressFilled = localStorage.getItem(`isProgressFilled-${courseId}`);
+                if (storedIsProgressFilled) {
+                    try {
+                        setIsProgressFilled(JSON.parse(storedIsProgressFilled));
+                    } catch (e: any) {
+                        console.error("Error parsing isProgressFilled:", e);
+                    }
                 }
-            }
 
-            setIsProgressFilled(initialIsProgressFilled);
+           
 
             workoutData.forEach(workout => {
                 if (!initialProgress[workout._id]) {
@@ -138,21 +140,10 @@ export default function WorkoutPage({ _id }: Workout) {
     fetchData();
 }, [courseId, selectedWorkoutsString]);
 
-useEffect(() => {
-    if (courseId) {
-        console.log("Сохраняем progress в localStorage для courseId:", courseId, "Data:", exercisesProgress);
-        localStorage.setItem(`exercisesProgress-${courseId}`, JSON.stringify(exercisesProgress));
-    }
-}, [exercisesProgress, courseId]);
 
-    useEffect(() => {
-        if (courseId) {
-            localStorage.setItem(`isProgressFilled-${courseId}`, JSON.stringify(isProgressFilled));
-        }
-    }, [isProgressFilled, courseId]);
-useEffect(() => {
-    console.log("Все ключи в localStorage:", Object.keys(localStorage));
-}, []);
+
+ 
+
 
     if (loading) {
         return <div>Loading workouts...</div>;
@@ -169,42 +160,34 @@ useEffect(() => {
     };
 
   const closeModal = (success: boolean, progressData?: number[]) => {
-    setIsModalOpen(false);
-    setShowSuccessMessage(true);
+        setIsModalOpen(false);
+        setShowSuccessMessage(true);
 
-    if (success) {
-        setIsProgressFilled(prevState => ({
-            ...prevState,
-            [selectedWorkoutId!]: true
-        }));
+        if (success) {
+         const newIsProgressFilled = { ...isProgressFilled, [selectedWorkoutId!]: true }; // Create new object
 
-        setTimeout(() => {
-            setShowSuccessMessage(false);
-        }, 2000);
+            setIsProgressFilled(newIsProgressFilled); // Set the new state
 
-        if (progressData && selectedWorkoutId) {
-            setExercisesProgress(prevState => {
-                const newExercisesProgress = { ...prevState };
+            localStorage.setItem(`isProgressFilled-${courseId}`, JSON.stringify(newIsProgressFilled));  // Update localStorage
 
-               
-                if (!newExercisesProgress[selectedWorkoutId]) {
-                    newExercisesProgress[selectedWorkoutId] = {};
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 2000);
+
+            // Update progress in WorkoutPage after modal is closed
+            const storedProgress = localStorage.getItem(`exercisesProgress-${courseId}`);
+            let initialProgress: { [workoutId: string]: { [exerciseName: string]: number } } = {};
+            if (storedProgress) {
+                try {
+                    initialProgress = JSON.parse(storedProgress);
+                } catch (e: any) {
+                    console.error("Error parsing stored progress:", e);
                 }
+            }
 
-               
-                const workout = workouts.find(w => w._id === selectedWorkoutId);
-                if (workout) {
-                
-                    workout.exercises.forEach((exercise, index) => {
-                        newExercisesProgress[selectedWorkoutId]![exercise.name] = progressData[index] || 0;
-                    });
-                }
-
-                return newExercisesProgress;
-            });
+            setExercisesProgress(initialProgress);
         }
-    }
-};
+    };
 
     const handleCloseSuccess = () => {
         setShowSuccessMessage(false);

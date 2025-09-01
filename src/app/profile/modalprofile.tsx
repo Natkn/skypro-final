@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import styles from './modalprofile.module.css';
 import { useRouter } from 'next/navigation';
 
-interface ModalProfileProps {
+export interface ModalProfileProps {
   isOpen: boolean;
   onClose: () => void;
   username: string;

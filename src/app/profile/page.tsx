@@ -5,9 +5,11 @@ import Image from "next/image";
 import profile from "../../../public/image/profilephoto.svg";
 import Card from '@/components/card/card';
 import { Course } from '@/libs/fitness';
-import { getUserProfile } from '../services/courses/courseApi';
+import { getCourses, getUserProfile } from '../services/courses/courseApi';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { setUserData } from '../services/feature/authSlice';
+import { clearUserData, setUserData } from '../services/feature/authSlice';
+import { useRouter } from 'next/navigation'; 
+import { ModalProfileProps } from './modalprofile';
 
 export interface UserProfile {
     email: string;
@@ -16,16 +18,17 @@ export interface UserProfile {
     _id: string;
      id: number;
   username: string;
+  
 }
 
 export function filterCoursesByIds(courses: Course[], courseId: string[]): Course[] {
   return courses.filter((course) => courseId.includes(course._id));
 }
-export default function Profile() {
+export default function Profile({onLogout}:ModalProfileProps) {
     const { allCourses } = useAppSelector((state) => state.courses);
     const { userData } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-
+    const router = useRouter(); 
     const selectedCourseIds = userData?.selectedCourses || [];
 
     const selectedCourses = filterCoursesByIds(allCourses, selectedCourseIds);
@@ -46,6 +49,11 @@ export default function Profile() {
         console.log(`Продолжить курс с ID: ${courseId}`);
     };
 
+    const handleLogout = () => {
+    localStorage.removeItem('authUser');
+    router.push('/home/main');
+  };
+
     return (
         <div className={styles.profileContainer}>
             <div className={styles.profileBox}>
@@ -58,7 +66,7 @@ export default function Profile() {
                         <div className={styles.profileData}>
                             <div className={styles.profileName}> {userData?.email ? userData.email.split('@')[0] : 'User'}</div>
                             <div className={styles.profileLogin}> Логин: {userData?.email || 'N/A'}</div>
-                            <button className={styles.logOut}>Выйти</button>
+                             <button className={styles.logOut} onClick={handleLogout}>Выйти</button> 
                         </div>
                     </div>
                 </div>

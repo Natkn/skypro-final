@@ -10,14 +10,13 @@ export type initialStateType = {
   fetchError: string | null;
   fetchIsLoading: boolean;
   currentWorkout: WorkoutType | null;
-  courseProgress: {
-    [courseId: string]: {
-      workouts?: {
-        workoutId: string;
-        workoutCompleted: boolean;
-      }[];
-      progress: number;
+ courseProgress: { // Прогресс по курсу (например, сколько процентов курса пройдено)
+        [courseId: string]: number;
     };
+    exerciseProgress: { // Прогресс по упражнениям в каждой тренировке
+        [workoutId: string]: {
+            [exerciseName: string]: number;
+        };
   };
 };
 
@@ -29,6 +28,7 @@ const initialState: initialStateType = {
   fetchIsLoading: true,
   currentWorkout: null,
   courseProgress: {},
+   exerciseProgress: {},
 };
 
 const courseSlice = createSlice({
@@ -59,22 +59,35 @@ const courseSlice = createSlice({
       state.currentWorkout = null;
     },
 
-    setCourseProgress: (
-      state,
-      action: PayloadAction<{
-        courseId: string;
-        workouts?: {
-          workoutId: string;
-          workoutCompleted: boolean;
-        }[];
-        progress: number;
-      }>
-    ) => {
-      state.courseProgress[action.payload.courseId] = {
-        workouts: action.payload.workouts,
-        progress: action.payload.progress,
-      };
-    },
+      setCourseProgress: (
+            state,
+            action: PayloadAction<{
+                courseId: string;
+                progress: number;
+            }>
+        ) => {
+            state.courseProgress[action.payload.courseId] = action.payload.progress;
+        },
+    setExerciseProgress: (
+            state,
+            action: PayloadAction<{
+                workoutId: string;
+                exerciseName: string;
+                progress: number;
+            }>
+        ) => {
+            const { workoutId, exerciseName, progress } = action.payload;
+
+            if (!state.exerciseProgress[workoutId]) {
+                state.exerciseProgress[workoutId] = {};
+            }
+
+            state.exerciseProgress[workoutId][exerciseName] = progress;
+        },
+         loadStateFromLocalStorage: (state, action: PayloadAction<initialStateType>) => {
+            return { ...state, ...action.payload };
+        },
+    
     setFetchError: (state, action: PayloadAction<string>) => {
       state.fetchError = action.payload;
     },
@@ -95,5 +108,8 @@ export const {
   clearCurrentWorkout,
   setCurrentCourse,
   setCourseProgress,
+  setExerciseProgress,
+  loadStateFromLocalStorage
 } = courseSlice.actions;
 export const courseSliceReducer = courseSlice.reducer;
+export const selectExerciseProgress = (state: any) => state.courses.exerciseProgress;

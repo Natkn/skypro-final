@@ -8,6 +8,8 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   
+
+  
   return (
     <div className={styles.wrapper}>    
       <div className={styles.container}> 
