@@ -8,7 +8,7 @@ import headerpic from "../../../../public/image/headerpic.svg";
 import Image from "next/image";
 import { Course } from '@/libs/fitness'; 
 import { useRouter } from 'next/navigation';
-import { getCourses } from '@/app/services/courses/courseApi';
+import { getCourses } from '@/services/courses/courseApi';
 
 
 
@@ -16,7 +16,7 @@ export default function Home() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-const router = useRouter();
+  const router = useRouter();
 
 useEffect(() => {
     const loadCourses = async () => {
@@ -67,8 +67,9 @@ useEffect(() => {
         
         <main className={styles.main}>
           <div className={styles.hero}>
-            Начните заниматься спортом <br />и улучшите качество жизни
-            <Image src={headerpic} alt="Логотип" width={288} height={120} />
+               <div className={styles.heroBox}>
+            Начните заниматься спортом и улучшите качество жизни </div>
+            <Image className={styles.headerpic} src={headerpic} alt="Логотип" width={288} height={120} />
           </div>
           <section className={styles.cards}>
             <div className={styles.cardsRow}>

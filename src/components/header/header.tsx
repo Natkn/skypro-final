@@ -5,12 +5,12 @@ import styles from "@/components/header/header.module.css";
 import logo from "../../../public/image/logo.svg";
 import Modal from '../../app/auth/signin/page'; 
 import arrow from "../../../public/image/arrow.svg";
-import ModalProfile from "@/app/profile/modalprofile";
+import ModalProfile from "@/components/modalProfile/modalprofile";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from "@/store/store";
 
-interface User {
+export interface User {
   username: string;
   email: string;
 }
@@ -111,9 +111,9 @@ const Header = () => {
         <ModalProfile
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
+        onLogout={handleLogout}
         username={user?.username || ''} 
         email={user?.email || ''}
-        onLogout={handleLogout}
       />
     </header>
   );

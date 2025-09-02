@@ -1,50 +1,28 @@
 
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import styles from './card.module.css';
 import Image from "next/image";
-import { getImagePath } from '@/app/helpers/image'; 
+import { getImagePath } from '@/helpers/image'; 
 import IconOver from './iconover';
 import { CalendarIcon, ScaleIcon, TimeIcon } from '@/components/card/icon'; 
-import Progress from '@/app/profile/progress';
+import Progress from '@/helpers/progress/progress';
 import iconMinus from "../../../public/image/iconMinus.svg";
 import { useRouter } from 'next/navigation';
-import { removeFavoriteCourse } from '@/app/services/feature/courseSlice';
+import { removeFavoriteCourse } from '@/services/feature/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { setUserData } from '@/app/services/feature/authSlice';
-import { removeCourseFromUser, getCourseProgress } from '@/app/services/courses/courseApi';
+import { setUserData } from '@/services/feature/authSlice';
+import { removeCourseFromUser, getCourseProgress } from '@/services/courses/courseApi';
 import WorkoutModal from '../workoutModal/page';
-import { WorkoutProgress } from '@/libs/fitness';
+import { CardProps, WorkoutProgress } from '@/libs/fitness';
 import { roundProgress } from '@/utils/progressUtils';
 
 
-export interface CardProps {
-  _id: string;
-  name: string;
-  nameRU: string;     
-  nameEN: string;
-  description?: string; 
-  directions?: string[];
-  fitting?: string[];   
-  workouts?: string[]; 
-  image?: string;
-  durationInDays: number;
-  dailyDurationInMinutes: {
-    from: number;
-    to: number;
-  };
-  complexity: string;
-  order: number;
-  onContinueClick?: (_id: string) => void;
-  showProgress?: boolean;
-  height?: number;
-}
 
-const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, description, complexity,onContinueClick, showProgress = false,  height = 501}) => {
-  const imageSrc = getImagePath(nameEN);
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-const { userData } = useAppSelector((state) => state.auth);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, complexity, showProgress = false,  height = 501}) => {
+    const imageSrc = getImagePath(nameEN);
+    const dispatch = useAppDispatch();
+    const { userData } = useAppSelector((state) => state.auth);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

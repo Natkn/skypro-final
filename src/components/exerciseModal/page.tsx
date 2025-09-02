@@ -1,27 +1,10 @@
 'use client';
-
-import { useRouter } from "next/navigation";
 import styles from "@/components/exerciseModal/exercisemodal.module.css";
 import { useEffect, useState } from "react";
-import { getWorkoutById, saveWorkoutProgress } from "@/app/services/courses/courseApi";
-import { ExerciseType } from "@/app/workout/page";
-import SuccessModal from "../modal/page";
+import { getWorkoutById, saveWorkoutProgress } from "@/services/courses/courseApi";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setExerciseProgress, selectExerciseProgress } from "@/app/services/feature/courseSlice"; // Импортируем селектор
-
-
-interface ExerciseModalProps {
-  _id: string;
-  isOpen?: boolean;
-  onClose: (success: boolean, progressData?: number[]) => void;
-  courseId: string;
-  workoutId: string;
-}
-
-interface WorkoutDetails {
-  _id: string;
-  exercises: ExerciseType[];
-}
+import { setExerciseProgress, selectExerciseProgress } from "@/services/feature/courseSlice";  
+import { ExerciseModalProps, ExerciseType, WorkoutDetails } from "@/libs/fitness";
 
 export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: ExerciseModalProps) {
   const [exerciseProgress, setLocalExerciseProgress] = useState<{ [exerciseId: string]: number }>({});
@@ -29,7 +12,7 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
   const [error, setError] = useState<string | null>(null);
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
   const dispatch = useAppDispatch();
-  const progressFromStore = useAppSelector(selectExerciseProgress); // Получаем прогресс из Redux store
+  const progressFromStore = useAppSelector(selectExerciseProgress); 
 
   const handleInputChange = (exerciseId: string, value: number) => {
     setLocalExerciseProgress({ ...exerciseProgress, [exerciseId]: value });

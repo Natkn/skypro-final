@@ -2,30 +2,13 @@
 import { useEffect, useState } from 'react';
 import styles from './workout.module.css';
 import { useSearchParams } from 'next/navigation';
-import { getCourseById, getCourseWorkouts, WorkoutType } from '../services/courses/courseApi';
-import Progress from '../profile/progress';
-import { Course } from '@/libs/fitness';
+import { getCourseById, getCourseWorkouts, WorkoutType } from '../../services/courses/courseApi';
+import Progress from '../../helpers/progress/progress';
+import { Course, Workout } from '@/libs/fitness';
 import ExerciseModal from '@/components/exerciseModal/page';
 import SuccessModal from '@/components/modal/page';
 
 
-export interface Workout {
-    _id: string;
-    name: string;
-    video: string;
-    exercises: ExerciseType[];
-    progress?: number;
-    onClose: () => void;
-    workoutName: string;
-    workoutDescription: string;
-}
-
-export interface ExerciseType {
-    name: string;
-    quantity: number;
-    _id: string;
-    progress: number;
-}
 
 export default function WorkoutPage({ _id }: Workout) {
 
@@ -91,7 +74,7 @@ export default function WorkoutPage({ _id }: Workout) {
 
                 setExercisesProgress(initialProgress);
 
-                 // Load isProgressFilled from localStorage
+               
                 const storedIsProgressFilled = localStorage.getItem(`isProgressFilled-${courseId}`);
                 if (storedIsProgressFilled) {
                     try {
@@ -142,9 +125,6 @@ export default function WorkoutPage({ _id }: Workout) {
 
 
 
- 
-
-
     if (loading) {
         return <div>Loading workouts...</div>;
     }
@@ -164,17 +144,17 @@ export default function WorkoutPage({ _id }: Workout) {
         setShowSuccessMessage(true);
 
         if (success) {
-         const newIsProgressFilled = { ...isProgressFilled, [selectedWorkoutId!]: true }; // Create new object
+         const newIsProgressFilled = { ...isProgressFilled, [selectedWorkoutId!]: true };  
 
-            setIsProgressFilled(newIsProgressFilled); // Set the new state
+            setIsProgressFilled(newIsProgressFilled); 
 
-            localStorage.setItem(`isProgressFilled-${courseId}`, JSON.stringify(newIsProgressFilled));  // Update localStorage
+            localStorage.setItem(`isProgressFilled-${courseId}`, JSON.stringify(newIsProgressFilled));  
 
             setTimeout(() => {
                 setShowSuccessMessage(false);
             }, 2000);
 
-            // Update progress in WorkoutPage after modal is closed
+           
             const storedProgress = localStorage.getItem(`exercisesProgress-${courseId}`);
             let initialProgress: { [workoutId: string]: { [exerciseName: string]: number } } = {};
             if (storedProgress) {
@@ -194,14 +174,17 @@ export default function WorkoutPage({ _id }: Workout) {
     };
 
 
-    return (
-        <div>
-            <div className={styles.workoutName}> {courseName} </div>
-            {workouts.length > 0 ? (
-                <div>
-                    {workouts
-                        .filter(workout => selectedWorkouts.includes(String(workout._id)))
-                        .map((workout, workoutIndex) => (
+   return (
+    <div>
+        <div className={styles.workoutName}> {courseName} </div>
+        {workouts.length > 0 ? (
+            <div>
+                {workouts
+                    .filter(workout => selectedWorkouts.includes(String(workout._id)))
+                    .map((workout, workoutIndex) => {
+                         const nameParts = workout.name.split(" / ");
+                        const workoutName = nameParts[0] || workout.name;
+                        return (
                             <div key={workout._id} style={{ marginBottom: '40px' }}>
                                 <iframe
                                     width="1160"
@@ -214,32 +197,26 @@ export default function WorkoutPage({ _id }: Workout) {
                                 ></iframe>
 
                                 <div className={styles.exercisesSectionContainer}>
-                                    <h3 className={styles.sectionTitle}>Упражнения тренировки {workoutIndex + 2}</h3>
+                                    <h3 className={styles.sectionTitle}>Упражнения тренировки {workoutName}</h3>
 
                                     {workout.exercises && workout.exercises.length > 0 ? (
                                         <div className={styles.exercisesSection}>
                                             <div className={styles.exercisesBox}>
-                                                {Array.from({ length: Math.ceil(workout.exercises.length / 3) }, (_, i) => {
-                                                    const startIndex = i * 3;
-                                                    const group = workout.exercises.slice(startIndex, startIndex + 3);
-
-                                                    return (
-                                                        <div key={i} className={styles.exerciseColumn}>
-                                                            {group.map((exercise, exerciseIndex) => (
-                                                                <div key={exerciseIndex} className={styles.exerciseItem}>
-                                                                    <div className={styles.exerciseName}> {exercise.name}
-                                                                        <span className={styles.progressValue}> {exercisesProgress[workout._id]?.[exercise.name] || 0}%</span>
-                                                                    </div>
-                                                                    <div className={styles.progressGroup}>
-                                                                        <Progress value={exercisesProgress[workout._id]?.[exercise.name] || 0} />
-
-                                                                    </div>
+                                                {Array.from({ length: Math.ceil(workout.exercises.length / 3) }, (_, i) => (
+                                                    <div key={i} className={styles.exerciseColumn}>
+                                                        {workout.exercises.slice(i * 3, i * 3 + 3).map((exercise, exerciseIndex) => (
+                                                            <div key={exerciseIndex} className={styles.exerciseItem}>
+                                                                <div className={styles.exerciseName}> {exercise.name}
+                                                                    <span className={styles.progressValue}> {exercisesProgress[workout._id]?.[exercise.name] || 0}%</span>
                                                                 </div>
-
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                })} </div>
+                                                                <div className={styles.progressGroup}>
+                                                                    <Progress value={exercisesProgress[workout._id]?.[exercise.name] || 0} />
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ))}
+                                            </div>
                                             <div className={styles.fillProgressButtonContainer}>
                                                 <button
                                                     className={styles.fillProgressButton}
@@ -257,24 +234,22 @@ export default function WorkoutPage({ _id }: Workout) {
 
                                                     />
                                                 )}
-                                                {showSuccessMessage &&
+                                                {showSuccessMessage && (
                                                     <SuccessModal onClose={handleCloseSuccess} />
-                                                }
+                                                )}
                                             </div>
-
                                         </div>
                                     ) : (
                                         <p>Нет упражнений для этой тренировки.</p>
                                     )}
                                 </div>
                             </div>
-                        ))}
-
-                </div>
-
-            ) : (
-                <div>No workouts found for this course.</div>
-            )}
-        </div>
-    );
+                        );
+                    })}
+            </div>
+        ) : (
+            <div>No workouts found for this course.</div>
+        )}
+    </div>
+);
 }

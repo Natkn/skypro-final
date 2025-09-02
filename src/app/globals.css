@@ -23,3 +23,16 @@ body {
     padding-right: 6rem;
     background-color: #FAFAFA;
 }
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+
+body {
+
+  padding-left: 1rem;
+    padding-right: 0rem;
+   
+}
+
+
+}

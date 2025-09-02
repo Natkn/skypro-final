@@ -1,56 +1,49 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import styles from './profile.module.css';
 import Image from "next/image";
 import profile from "../../../public/image/profilephoto.svg";
 import Card from '@/components/card/card';
 import { Course } from '@/libs/fitness';
-import { getCourses, getUserProfile } from '../services/courses/courseApi';
+import {  getUserProfile } from '../../services/courses/courseApi';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { clearUserData, setUserData } from '../services/feature/authSlice';
+import { clearUserData, setUserData, User } from '../../services/feature/authSlice';
 import { useRouter } from 'next/navigation'; 
-import { ModalProfileProps } from './modalprofile';
 
-export interface UserProfile {
-    email: string;
-    selectedCourses: string[];
-    courseProgress: [];
-    _id: string;
-     id: number;
-  username: string;
-  
-}
+
 
 export function filterCoursesByIds(courses: Course[], courseId: string[]): Course[] {
   return courses.filter((course) => courseId.includes(course._id));
 }
-export default function Profile({onLogout}:ModalProfileProps) {
+export default function Profile() {
     const { allCourses } = useAppSelector((state) => state.courses);
     const { userData } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const router = useRouter(); 
     const selectedCourseIds = userData?.selectedCourses || [];
-
+ const [user, setUser] = useState<User | null>(null);
     const selectedCourses = filterCoursesByIds(allCourses, selectedCourseIds);
 
-    useEffect(() => {
-        if (!userData) {
-            getUserProfile()
-                .then((data) => {
-                    dispatch(setUserData(data)); 
-                })
-                .catch((error) => {
-                    console.error('Error loading user profile:', error);
-                });
-        }
-    }, [dispatch, userData]);
+  useEffect(() => {
+    if (!userData) {
+        getUserProfile()
+            .then((data) => {
+                dispatch(setUserData(data));
+            })
+            .catch((error) => {
+                console.error('Error loading user profile:', error);
+            });
+    }
+}, [dispatch, userData]);
 
     const handleContinueClick = (courseId: string) => {
         console.log(`Продолжить курс с ID: ${courseId}`);
     };
 
     const handleLogout = () => {
+        dispatch(clearUserData());
     localStorage.removeItem('authUser');
+     setUser(null); 
     router.push('/home/main');
   };
 

@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/app/helpers/constant';
+import { BASE_URL } from '@/helpers/constant';
 import axios from 'axios';
 import { Course, CourseProgressResponse } from '@/libs/fitness';
 import { CardProps } from '@/components/card/card';

@@ -10,10 +10,10 @@ export type initialStateType = {
   fetchError: string | null;
   fetchIsLoading: boolean;
   currentWorkout: WorkoutType | null;
- courseProgress: { // Прогресс по курсу (например, сколько процентов курса пройдено)
+ courseProgress: {
         [courseId: string]: number;
     };
-    exerciseProgress: { // Прогресс по упражнениям в каждой тренировке
+    exerciseProgress: { 
         [workoutId: string]: {
             [exerciseName: string]: number;
         };

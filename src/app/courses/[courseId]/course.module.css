@@ -5,22 +5,26 @@
   flex-direction: column;
 }
 
-.courseImage {
-  margin-bottom: 60px;
-}
 
+
+.suggestionsContainer{
+  box-sizing: border-box;
+  width: 1160px;
+  margin-top: 60px;
+}
 .title {
   font-weight: 600;
   font-size: 40px;
   line-height: 110%; 
   letter-spacing: 0;
   margin-bottom: 40px;
+  width: 810px;
 }
 
 .suggestionsBlock {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+ gap: 17px;
   margin-bottom: 60px;
 }
 
@@ -32,7 +36,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 369px;
 gap: 25px;
 
 }
@@ -85,22 +88,43 @@ gap: 25px;
 .directionsBlock {
   display: flex;
   flex-direction: column;
+  
+}
+
+.directionsBox{
+  width: 1160px;
+gap: 34px;
+opacity: 1;
+border-radius: 28px;
+padding: 30px;
+background: #BCEC30;
+  display: grid;
+    grid-template-columns: repeat(3, 1fr);
+gap:34px;
 }
 
 .directions {
-  background: rgba(188, 236, 48, 1);
-  padding: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
+ display: flex;
+flex-direction: row;
+align-items: flex-start;
+ gap: 8px;
+font-weight: 400;
+font-style: Regular;
+font-size: 24px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+
+}
+
+.courseImage{
+    margin-bottom: 4px;
 }
 
 .footerCourseDiscription {
   position: relative;
   width: 1160px;
 height: 486px;
-  margin-top: 44px;
+  margin-top: 98px;
   margin-bottom: 50px;
   display: flex;
   flex-direction: row;
@@ -182,7 +206,7 @@ z-index: 15;
 
 .maskImageWrapper {
   position: absolute;
-  top: -110px;
+  top: -100px;
     left: 24px;
   z-index: 3;
   display: flex;
@@ -192,7 +216,7 @@ z-index: 15;
 
 .masklineImageWrapper {
 position: absolute;
-    top: -6px;
+
     z-index: 1;
     display: flex
 ;
@@ -213,4 +237,85 @@ position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+  
+  .title{
+font-weight: 500;
+font-size: 24px;
+margin-bottom: 24px;
+  }
+
+.suggestionsBlock{
+  display: flex;
+    flex-direction: column;
+}
+
+
+  .suggestionOne{
+    width: 343px;
+  }
+
+  .directionsBox{
+     width: 343px;
+    display: grid
+;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 24px;
+    padding: 30px;
+   
+  }
+
+.directions{
+   font-size: 18px;
+   height: 26px;
+}
+
+.footerCourseDiscription{
+  margin-top: 154px;
+   width: 343px;
+   z-index: 10;
+}
+
+.footerTitle{
+font-weight: 500;
+font-size: 32px;
+ width: 226px;
+
+}
+
+.footerContent{
+   width: 226px;
+}
+
+
+.footerList{
+  width: 283px;
+font-size: 18px;
+}
+.loginButton{
+   width: 283px;
+   font-size: 16px;
+}
+
+.maskImageWrapper{
+        position: absolute;
+        top: -364px;
+        left: -94px;
+    width: 334px;
+    z-index: 1;
+}
+
+.masklineImageWrapper{
+ position: absolute;
+        top: -196px;
+        right: -58px;
+        width: 770px;
+        height: 336px;
+}
+
 }

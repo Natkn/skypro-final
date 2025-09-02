@@ -1,11 +1,11 @@
 'use client';
 
-import { getWorkoutById, WorkoutType } from "@/app/services/courses/courseApi";
+import { getWorkoutById, WorkoutType } from "@/services/courses/courseApi";
 import { useRouter } from "next/navigation";
 import styles from "@/components/workoutModal/workoutModal.module.css";
-import { Workout } from "@/app/workout/page";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "@/app/helpers/constant";
+import { BASE_URL } from "@/helpers/constant";
+import { Workout } from "@/libs/fitness";
 
 type Training= WorkoutType;
 
@@ -16,12 +16,6 @@ interface WorkoutsModalProps {
   loading?: boolean;
    _id: string;
 }
-
- type Exercise = {
-   name: string;
-   quantity: number;
-   _id: string;
- };
 
 
 export default function WorkoutModal({_id,onClose}:WorkoutsModalProps){

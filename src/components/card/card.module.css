@@ -128,3 +128,9 @@ border-style: none;
 .cardContinueButton{
     margin-top: 40px;
 }
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+   .card{
+    width:343px ;
+   }}

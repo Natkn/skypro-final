@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface UserData {
+export interface User {
   id: number;
   username: string;
   email: string;
-    selectedCourses: string[];
+  selectedCourses: string[];
 }
 
 type initialStateType = {
   username: string;
   access: string;
   refresh: string;
-  userData: UserData | null;
+  userData: User | null;
   isAuthenticated: boolean;
 };
 
@@ -42,7 +42,7 @@ const authSlice = createSlice({
       localStorage.setItem('refresh', action.payload);
       state.isAuthenticated = true;
     },
-    setUserData: (state, action: PayloadAction<UserData>) => {
+    setUserData: (state, action: PayloadAction<User>) => {
       state.userData = action.payload;
       state.isAuthenticated = true;
     },

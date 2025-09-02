@@ -5,8 +5,8 @@ import {
   useSelector,
   useStore,
 } from 'react-redux';
-import { courseSliceReducer } from '../app/services/feature/courseSlice';
-import { authSliceReducer } from '../app/services/feature/authSlice';
+import { courseSliceReducer } from '../services/feature/courseSlice';
+import { authSliceReducer } from '../services/feature/authSlice';
 
 export const makeStore = () => {
   return configureStore({
