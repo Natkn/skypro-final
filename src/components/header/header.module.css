@@ -1,11 +1,13 @@
 .header{
-      padding-bottom: 4rem;
-      padding-top: 2rem;
+padding-bottom: 4rem;
+    padding-top: 2rem;
     display: flex;
-  justify-content: space-between;
-  z-index: 1;
-      box-sizing: border-box;
-      width: 1160px;
+    justify-content: space-between;
+    z-index: 1;
+    box-sizing: border-box;
+    width: 1160px;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 
@@ -80,19 +82,24 @@ cursor: pointer;
     cursor: pointer;
 }
 
+.desktopImage {
+  display: block; 
+}
 
+.mobileImage {
+  display: none; 
+}
 
 @media screen and (min-width: 357px) and (max-width: 768px) {
    .header{
     position: relative;
     padding-top: 2.5rem;
-     padding-bottom: 0rem;
+     padding-bottom: 2rem;
     z-index: 1;
     box-sizing: border-box;
   display: flex;
   justify-content: flex-start;
  gap: 50px;
- width: 0px;
    }
 
    .logoText{
@@ -116,13 +123,33 @@ padding-left: 16px;
   .username{
     display: none;
   }
-  
-  .userIcon{
-    width: 36px;
-    height: 36px;
+
+
+   .desktopImage {
+    display: none; 
   }
-  
-  
-  
-  
+
+  .mobileImage {
+    display: block; 
+    margin-left: 18px;
+    margin-right: 10px;
   }
+
+
+.profileArrow{
+  width: 4px;
+  height: 4px;
+}
+
+.userProfile{
+         display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+}
+
+
+
+
+
+
+}

@@ -1,5 +1,6 @@
 
 export const getImagePath = (courseNameEN: string): string => {
+  
   switch (courseNameEN) {
     case 'Yoga':
       return  "/image/cardOne.png"; 
@@ -12,7 +13,7 @@ export const getImagePath = (courseNameEN: string): string => {
        case 'BodyFlex':
       return "/image/cardFive.png"; 
     default:
-      return "/image/"; 
+      return "/image/cardOne.png"; 
   }
 };
 
@@ -28,8 +29,27 @@ export const getSkillCardImage = (courseId: string): string => {
     case "6i67sm": 
       return "/image/skillcard4.png";
     case "q02a6i": 
-      return "/image/skillcard5.png";
+         return "/image/skillcard5.png";
     default:
       return "/image/skillcard1 .png"; 
+  }
+};
+
+
+
+export const getSkillCardImageMini = (courseId: string): string => {
+  switch (courseId) {
+    case "ab1c3f": 
+         return  "/image/cardOne.png"; 
+    case "kfpq8e": 
+       return  "/image/cardTwo.png"; 
+    case "ypox9r": 
+      return "/image/cardThree.png"; 
+    case "6i67sm": 
+   return "/image/cardFour.png"; 
+    case "q02a6i": 
+       return "/image/cardFive.png"; 
+    default:
+       return "/image/cardOne.png"; 
   }
 };

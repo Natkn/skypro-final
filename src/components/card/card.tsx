@@ -7,7 +7,7 @@ import IconOver from './iconover';
 import { CalendarIcon, ScaleIcon, TimeIcon } from '@/components/card/icon'; 
 import Progress from '@/helpers/progress/progress';
 import iconMinus from "../../../public/image/iconMinus.svg";
-import { useRouter } from 'next/navigation';
+
 import { removeFavoriteCourse } from '@/services/feature/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setUserData } from '@/services/feature/authSlice';

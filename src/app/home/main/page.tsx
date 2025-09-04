@@ -9,31 +9,35 @@ import Image from "next/image";
 import { Course } from '@/libs/fitness'; 
 import { useRouter } from 'next/navigation';
 import { getCourses } from '@/services/courses/courseApi';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { setAllCourses } from '@/services/feature/courseSlice';
+import { useSelector } from 'react-redux';
 
 
 
 export default function Home() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+const router = useRouter();
+ const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { allCourses } = useAppSelector((state) => state.courses);
+const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
 
 useEffect(() => {
-    const loadCourses = async () => {
-      setLoading(true);
-      try {
-        const coursesData = await getCourses();
-        const sortedCourses = [...coursesData].sort((a, b) => a.order - b.order);
-        setCourses(sortedCourses);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadCourses = async () => {
+    try {
+      const coursesData = await getCourses();
+      const sortedCourses = [...coursesData].sort((a, b) => a.order - b.order);
+      dispatch(setAllCourses(sortedCourses)); 
+    } catch (error) {
+      console.error("Failed to load courses:", error);
+    } finally {
+      setIsLoading(false); 
+    }
+  };
 
-    loadCourses();
-  }, []);
+  loadCourses();
+}, [dispatch, isAuthenticated]);
+
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -43,17 +47,8 @@ useEffect(() => {
   };
 
 
-
-  if (loading) {
-    return <div>Loading courses...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   const numCards = 5;
-  const visibleCourses = courses.slice(0, numCards);
+  const visibleCourses = allCourses.slice(0, numCards);
 
 
     const handleCourseClick = (courseId: string) => {
@@ -68,13 +63,13 @@ useEffect(() => {
         <main className={styles.main}>
           <div className={styles.hero}>
                <div className={styles.heroBox}>
-            Начните заниматься спортом и улучшите качество жизни </div>
-            <Image className={styles.headerpic} src={headerpic} alt="Логотип" width={288} height={120} />
+            Начните заниматься спортом и улучшите качество жизни</div>
+            <Image  className={styles.headerpic} src={headerpic} alt="Логотип" width={288} height={120} />
           </div>
           <section className={styles.cards}>
             <div className={styles.cardsRow}>
               {visibleCourses.map((course) => (
-                 <div key={course._id}  onClick={() => handleCourseClick(course._id)} > 
+                 <div key={course._id}  onClick={() => handleCourseClick(course._id)} className={styles.cardsBox}> 
                 <Card
                 height={501}
                     _id={course._id}

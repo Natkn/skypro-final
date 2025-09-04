@@ -76,7 +76,6 @@ cursor: pointer;
 
 
 
-
 .hero{
  display: flex;
 gap: 38px;
@@ -97,10 +96,15 @@ opacity: 1;
      width: 888px;
 }
 
+.cardsBox{
+  width:360px ;
+}
+
 @media screen and (min-width: 357px) and (max-width: 768px) {
   
   .hero{
     display: flex;
+    width: 343px;
   }
   
   
@@ -136,6 +140,13 @@ position: relative;
 
 }
 
+.topButton{
+  width: 343px;
+}
+
+ .cards{
+    width: 343px;
+ }
 
 
 }

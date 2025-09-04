@@ -175,17 +175,17 @@ export default function WorkoutPage({ _id }: Workout) {
 
 
    return (
-    <div>
+    <div className={styles.workoutContainer} >
         <div className={styles.workoutName}> {courseName} </div>
         {workouts.length > 0 ? (
-            <div>
+            <div className={styles.workoutContainer}>
                 {workouts
                     .filter(workout => selectedWorkouts.includes(String(workout._id)))
                     .map((workout, workoutIndex) => {
                          const nameParts = workout.name.split(" / ");
                         const workoutName = nameParts[0] || workout.name;
                         return (
-                            <div key={workout._id} style={{ marginBottom: '40px' }}>
+                            <div key={workout._id} className={styles.videoWorkout}>
                                 <iframe
                                     width="1160"
                                     height="640"
@@ -193,7 +193,7 @@ export default function WorkoutPage({ _id }: Workout) {
                                     title="YouTube video player"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
-                                    style={{ borderRadius: '30px' }}
+                            
                                 ></iframe>
 
                                 <div className={styles.exercisesSectionContainer}>

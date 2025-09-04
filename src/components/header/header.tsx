@@ -5,34 +5,49 @@ import styles from "@/components/header/header.module.css";
 import logo from "../../../public/image/logo.svg";
 import Modal from '../../app/auth/signin/page'; 
 import arrow from "../../../public/image/arrow.svg";
-import ModalProfile from "@/components/modalProfile/modalprofile";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { useAppSelector } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import ModalProfile from "../modalProfile/modalprofile";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@reduxjs/toolkit/query";
+import { clearUserData, setUserData, UserData } from "@/services/feature/authSlice";
+import { loadStateFromLocalStorage } from "@/services/feature/courseSlice";
 
-export interface User {
+interface User {
   username: string;
   email: string;
+  
 }
 
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-   const [user, setUser] = useState<User | null>(null);
- const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); 
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); 
   const router = useRouter();
-  
-  useEffect(() => {
-    const storedUser = localStorage.getItem('authUser');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser)); 
-      } catch (error) {
-        console.error("Error parsing user data from localStorage:", error);
-       
-      }
+const { userData } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+  const user = useAppSelector(state => state.auth.userData);
+  const dispatch = useAppDispatch();
+
+  // При монтировании компонента загружаем пользователя из localStorage в Redux
+useEffect(() => {
+  const storedUser = localStorage.getItem('authUser');
+  if (storedUser) {
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      const userData: UserData = {
+        _id: parsedUser._id || '',
+        username: parsedUser.username || '',
+        email: parsedUser.email || '',
+        selectedCourses: parsedUser.selectedCourses || [],
+      };
+      dispatch(setUserData(userData));
+    } catch (error) {
+      console.error("Error parsing user data from localStorage:", error);
     }
-  }, []);
+  }
+}, [dispatch]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -42,17 +57,15 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
-  const handleUserRegistered = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem('authUser', JSON.stringify(userData)); 
-    closeModal();
-  };
+const handleUserRegistered = (userData: UserData) => {
+  dispatch(setUserData(userData));
+  closeModal();
+};
 
-  const handleUserLoggedIn = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem('authUser', JSON.stringify(userData)); 
-    closeModal();
-  }
+const handleUserLoggedIn = (userData: UserData) => {
+  dispatch(setUserData(userData));
+  closeModal();
+};
 
   const openProfileModal = () => {
     setIsProfileModalOpen(true);
@@ -62,10 +75,11 @@ const Header = () => {
     setIsProfileModalOpen(false);
   };
 
- const handleLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem('authUser');
-    setUser(null); 
-    closeProfileModal()
+    dispatch(clearUserData());
+    closeProfileModal();
+    localStorage.clear();
     router.push('/home/main');
   };
 
@@ -81,17 +95,24 @@ const Header = () => {
             /></Link>  
       <div className={styles.logoText}>Онлайн-тренировки для занятий дома</div> </div>
     <nav className={styles.nav}>
-        {user ? (
+        {isAuthenticated && user ? (
           <div className={styles.userProfile}>
         
             <Image
+             className={`${styles.desktopImage} ${styles.userIcon}`}
               src="/image/profilephoto.svg" 
               alt="User Icon"
               width={50}
               height={50}
-              className={styles.userIcon}
             />
-            <span className={styles.username}>{user.username}</span>
+              <Image
+             className={`${styles.mobileImage} ${styles.Iconmini}`}
+              src="/image/ProfileMini.svg" 
+              alt="User Icon"
+              width={36}
+              height={36}
+            />
+            <span className={styles.username}>{userData?.email ? userData.email.split('@')[0] : 'User'}</span>
             <span className={styles.profileArrow} onClick={openProfileModal}>
                 <Image src={arrow} alt="arrow" width={8} height={8} /></span> 
           </div>
@@ -111,9 +132,9 @@ const Header = () => {
         <ModalProfile
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
-        onLogout={handleLogout}
         username={user?.username || ''} 
         email={user?.email || ''}
+        onLogout={handleLogout}
       />
     </header>
   );

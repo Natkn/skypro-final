@@ -1,9 +1,8 @@
-import { BASE_URL } from '@/helpers/constant';
+
 import axios from 'axios';
-import { Course, CourseProgressResponse } from '@/libs/fitness';
-import { CardProps } from '@/components/card/card';
-import { UserProfile } from '@/app/profile/page';
-import { ExerciseType } from '@/app/workout/page';
+import { CardProps, Course, CourseProgressResponse, ExerciseType, UserProfile } from '@/libs/fitness';
+import { BASE_URL } from '@/helpers/constant';
+
 
 
 type courseUserProp = {
@@ -18,7 +17,7 @@ export interface WorkoutType {
     _id: string;
     name: string;
     video: string;
-    exercises:ExerciseType [];
+    exercises:ExerciseType[];
 }
 
 export interface tokensType {

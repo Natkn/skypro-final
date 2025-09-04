@@ -3,10 +3,7 @@
 
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from './store';
-import { useRef, useEffect } from 'react';
-import { AppDispatch } from './store'; 
-import { setAllCourses } from '@/services/feature/courseSlice';
-import { getCourses } from '@/services/courses/courseApi'; 
+import { useRef } from 'react';
 
 export default function ReduxProvider({
   children,

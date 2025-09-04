@@ -4,12 +4,14 @@ import styles from './modal.module.css';
 import Image from "next/image";
 import logo from "../../../../public/image/logo.svg";
 import { authUser, registerUser } from '@/services/courses/authApi';
+import { UserData } from '@/services/feature/authSlice';
+import { useAuthHandlers } from '@/helpers/authModal.ts/authModal';
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onUserRegistered: (user: { username: string; email: string }) => void;
-    onUserLoggedIn: (user: { username: string; email: string }) => void;
+     onUserRegistered: (user: UserData) => void;
+  onUserLoggedIn: (user: UserData) => void;
 }
 
 enum ModalMode {
@@ -20,7 +22,7 @@ enum ModalMode {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose,onUserRegistered,onUserLoggedIn }) => {
   if (!isOpen) return null;
 
-
+console.log('Modal is open');
   const [modalMode, setModalMode] = useState(ModalMode.LOGIN);
 const [activeButton, setActiveButton] = useState<'login' | 'register'>('login'); 
 const [login, setLogin] = useState<string>('');
@@ -34,6 +36,7 @@ const [email, setEmail] = useState<string>('');
     const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
    const [token, setToken] = useState('');
+   
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -53,6 +56,7 @@ const [email, setEmail] = useState<string>('');
   const onChangeLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLogin(e.target.value);
   };
+ 
    const handleLogin = async () => {
         setIsLoading(true);
         setErrorMessage('');
@@ -77,7 +81,12 @@ const [email, setEmail] = useState<string>('');
 
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('refreshToken', response.refreshToken);
-            onUserLoggedIn({ username: login.split('@')[0], email: login });
+        onUserLoggedIn({
+  _id: '', 
+  username: login.split('@')[0],
+  email: login,
+  selectedCourses: [],
+});
         } catch (error: any) {
             if (error.message === "Invalid credentials") {
                 setLoginError("Неверный логин или пароль");
@@ -119,7 +128,12 @@ const [email, setEmail] = useState<string>('');
             const data = { email, password };
             const response = await registerUser(data);
             setErrorMessage(response.message);
-            onUserRegistered({ username: email.split('@')[0], email });
+            onUserRegistered({
+  _id: '', 
+  username: login.split('@')[0],
+  email: login,
+  selectedCourses: [],
+});
             onClose();
         } catch (error: any) {
             if (error.message === "Email already exists") {
@@ -181,6 +195,7 @@ const [email, setEmail] = useState<string>('');
       case ModalMode.REGISTER:
         return (
           <>
+          
             <Image src={logo} alt="Logo" width={220} height={35} />
              <div className={styles.modalInput}>
             <input
@@ -190,6 +205,7 @@ const [email, setEmail] = useState<string>('');
               value={email}
               onChange={onChangeEmail}
             />
+            
             <input
                className={`${styles.modal__input} ${passwordError ? styles.inputError : ''}`}
               type="password"

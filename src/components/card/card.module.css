@@ -133,4 +133,25 @@ border-style: none;
 @media screen and (min-width: 357px) and (max-width: 768px) {
    .card{
     width:343px ;
-   }}
+    height: 492px;
+   }
+  
+  
+   .cardName{
+    font-size: 24px;
+  }
+  
+  .cardInfo{
+    padding-left: 22px;
+  }
+  
+  .cardProgressLabel{
+    margin-bottom: 0px;
+  }
+  
+  .cardProgress{
+    margin-top: 12px;
+  }
+  
+  
+  }

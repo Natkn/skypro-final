@@ -43,6 +43,7 @@ const courseSlice = createSlice({
     },
     addFavoriteCourse: (state, action: PayloadAction<string>) => {
       state.favoriteCourses = [...state.favoriteCourses, action.payload];
+   localStorage.setItem('userData', JSON.stringify(state.allCourses));
     },
     removeFavoriteCourse: (state, action: PayloadAction<string>) => {
       state.favoriteCourses = state.favoriteCourses.filter(

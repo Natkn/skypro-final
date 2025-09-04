@@ -1,27 +1,59 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface User {
-  id: number;
+export interface UserData {
+   _id: string; 
   username: string;
   email: string;
-  selectedCourses: string[];
+    selectedCourses: string[] ;
 }
 
 type initialStateType = {
   username: string;
   access: string;
   refresh: string;
-  userData: User | null;
+  userData: UserData | null;
   isAuthenticated: boolean;
 };
 
-const initialState: initialStateType = {
-  username: '',
-  access: '',
-  refresh: '',
-  userData: null,
-  isAuthenticated: false,
+const loadFromLocalStorage = (): initialStateType => {
+  try {
+    const userDataRaw = localStorage.getItem('userData');
+    const access = localStorage.getItem('access') || '';
+    const refresh = localStorage.getItem('refresh') || '';
+    const username = localStorage.getItem('username') || '';
+
+    let userData: UserData | null = null;
+
+    if (userDataRaw) {
+      const parsed = JSON.parse(userDataRaw);
+      userData = {
+        _id: parsed._id || '',
+        username: parsed.username || username,
+        email: parsed.email || '',
+        selectedCourses: parsed.selectedCourses || [],
+      };
+    }
+
+    return {
+      username,
+      access,
+      refresh,
+      userData,
+      isAuthenticated: !!userData && !!access && !!refresh,
+    };
+  } catch (error) {
+    console.error('Error loading from localStorage:', error);
+    return {
+      username: '',
+      access: '',
+      refresh: '',
+      userData: null,
+      isAuthenticated: false,
+    };
+  }
 };
+
+const initialState: initialStateType = loadFromLocalStorage();
 
 const authSlice = createSlice({
   name: 'authSlice',
@@ -42,11 +74,17 @@ const authSlice = createSlice({
       localStorage.setItem('refresh', action.payload);
       state.isAuthenticated = true;
     },
-    setUserData: (state, action: PayloadAction<User>) => {
-      state.userData = action.payload;
-      state.isAuthenticated = true;
+    setIsAuthenticated: (state, action: PayloadAction<boolean>) => {
+  state.isAuthenticated = action.payload;
+},
+   setUserData: (state, action: PayloadAction<UserData>) => {
+  state.userData = action.payload;
+  state.isAuthenticated = true;
+  localStorage.setItem('userData', JSON.stringify(action.payload));
+
     },
     clearUserData: (state) => {
+       console.log("Вызываем clearUserData");
       state.username = '';
       state.access = '';
       state.refresh = '';
@@ -55,6 +93,8 @@ const authSlice = createSlice({
       localStorage.removeItem('email');
       localStorage.removeItem('access');
       localStorage.removeItem('refresh');
+       localStorage.removeItem('userData');
+           console.log("localStorage очищен");
     },
   },
 });
@@ -65,5 +105,6 @@ export const {
   setRefreshToken,
   setUserData,
   clearUserData,
+  setIsAuthenticated
 } = authSlice.actions;
 export const authSliceReducer = authSlice.reducer;

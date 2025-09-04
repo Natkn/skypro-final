@@ -3,6 +3,7 @@
 .descriptionBlock {
   display: flex;
   flex-direction: column;
+  z-index: 1;
 }
 
 
@@ -240,7 +241,13 @@ position: absolute;
 }
 
 
+.desktopImage {
+  display: block; 
+}
 
+.mobileImage {
+  display: none; 
+}
 
 @media screen and (min-width: 357px) and (max-width: 768px) {
   
@@ -248,11 +255,18 @@ position: absolute;
 font-weight: 500;
 font-size: 24px;
 margin-bottom: 24px;
+width: 300px;
   }
 
 .suggestionsBlock{
   display: flex;
     flex-direction: column;
+    margin-bottom: 34px;
+}
+
+.suggestionsContainer{
+  margin-top: 40px;
+  width: 345px;
 }
 
 
@@ -276,9 +290,12 @@ margin-bottom: 24px;
 }
 
 .footerCourseDiscription{
-  margin-top: 154px;
+  position: relative;
+  margin-top: 150px;
    width: 343px;
-   z-index: 10;
+   padding: 30px;
+ z-index: 30;
+
 }
 
 .footerTitle{
@@ -289,33 +306,63 @@ font-size: 32px;
 }
 
 .footerContent{
+  
    width: 226px;
+   margin-top: -12px;
+
+
 }
 
 
 .footerList{
   width: 283px;
 font-size: 18px;
+margin-left: 26px;
+    gap: 10px;
+
 }
 .loginButton{
    width: 283px;
    font-size: 16px;
 }
 
-.maskImageWrapper{
+.footerImage {
+ position: absolute; 
+     }
+
+  .maskImageWrapper {
         position: absolute;
-        top: -364px;
+        top: -368px;
         left: -94px;
-    width: 334px;
-    z-index: 1;
+        width: 334px;
+        z-index: 1; 
+    }
+
+    .masklineImageWrapperMini {
+        position: absolute;
+        top: -184px;
+        right: -226px;
+        width: 770px;
+        height: 366px;
+        z-index: 1; 
+    }
+
+  .desktopImage {
+    display: none; 
+  }
+
+  .mobileImage {
+    display: block; 
+  }
+
+.Imagemini{
+  border-radius: 30px;
+  margin-top: 36px;
 }
 
-.masklineImageWrapper{
- position: absolute;
-        top: -196px;
-        right: -58px;
-        width: 770px;
-        height: 336px;
-}
+
+
+
+
 
 }

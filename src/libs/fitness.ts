@@ -65,7 +65,7 @@ export interface CardProps {
   };
   complexity: string;
   order: number;
-  onContinueClick?: (_id: string) => void;
+  onContinueClick?: (_id: string, nameEN: string) => void;
   showProgress?: boolean;
   height?: number;
 }
@@ -81,4 +81,19 @@ export interface ExerciseModalProps {
 export interface WorkoutDetails {
   _id: string;
   exercises: ExerciseType[];
+}
+
+
+export interface UserProfile {
+    email: string;
+    selectedCourses: string[];
+    courseProgress: [];
+    _id: string;
+  username: string;
+  
+}
+
+export interface CourseProgress {
+    courseId: string;
+    progress: number; 
 }

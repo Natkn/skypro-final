@@ -100,6 +100,7 @@ margin-bottom: 20px;
 .exercisesBox{
 display: flex;
 flex-direction: row;
+ justify-content: flex-start;
  gap: 60px; 
 
 }
@@ -112,4 +113,73 @@ flex-direction: row;
 
 .progressBar{
     margin-top: 10px;
+}
+
+
+.videoWorkout iframe {
+  border-radius: 30px;
+}
+.videoWorkout{
+      width: 343px;
+}
+.workoutContainer{
+    max-width: 1440px;
+}
+@media screen and (min-width: 357px) and (max-width: 768px) {
+  
+
+    .workoutContainer{
+    max-width: 340px;
+}
+
+
+.workoutName{
+  font-size: 24px;
+}
+
+
+.videoWorkout iframe {
+  width: 343px;
+  height: 189px;
+  border-radius: 8px;
+}
+
+.exercisesSectionContainer{
+    width: 343px;
+    width: 343px;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        align-content: center;
+        flex-wrap: wrap;
+}
+
+
+.exerciseName{
+    margin-right: 0px;
+}
+
+.exerciseColumn{
+    gap: 24px;
+   
+}
+
+.exercisesBox{
+     width: 283px;
+
+}
+
+.fillProgressButton{
+width: 283px;
+padding-top: 8px;
+}
+
+.exercisesSection{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+
 }

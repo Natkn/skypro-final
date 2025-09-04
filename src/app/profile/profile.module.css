@@ -1,6 +1,6 @@
 
 .profileBox{
-  width: 1160px;
+
 height: 341px;
 gap: 40px;
 margin-bottom: 60px;
@@ -125,3 +125,81 @@ opacity: 1;
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+   .profileBoxTitle{
+ font-weight: 500;
+ font-size: 24px;
+ margin-bottom: 20px;
+
+   }
+  
+
+   .profile{
+    width: 343px; 
+    height: 365px;
+   }
+
+   .profileImage{
+    width: 141px;
+    height: 141px;
+  }
+
+    .profileInfo{
+  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+
+  .profileBox{
+    height: 365px;
+     width: 343px;
+
+  }
+
+
+.profileName{
+  font-size: 24px;
+}
+
+.profileLogin{
+  font-size: 16px;
+}
+
+
+.logOut{
+  width: 283px;
+height: 50px;
+gap: 10px;
+border-radius: 46px;
+border-width: 1px;
+padding-top: 16px;
+padding-right: 26px;
+padding-bottom: 16px;
+padding-left: 26px;
+
+}
+.profileData{
+  display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  gap: 18px;
+}
+
+
+  .cardBox{
+ margin-top: 80px;
+  }
+  .cardsRow {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  grid-gap: 12px;
+
+}
+  
+  
+  
+  }

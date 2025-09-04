@@ -169,3 +169,64 @@ line-height: 110.00000000000001%;
 letter-spacing: 0px;
 
 }
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+  
+
+.workModalOverlay{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.workModalContent{
+    position: relative;
+    background-color: white;
+    z-index: 1001;
+    width: 343px;
+    padding: 34px;
+   height: 585px;
+
+}
+
+.modalTitle{
+  width: 320px;
+}
+
+.scrollContainer{
+  width: 283px;
+      height: 335px;
+}
+
+.workoutList{
+   width: 283px;
+}
+
+.workoutName{
+  font-size: 18px;
+}
+
+.startButton{
+  width: 283px;
+height: 52px;
+border-radius: 46px;
+padding-top: 16px;
+padding-right: 26px;
+padding-bottom: 16px;
+padding-left: 26px;
+
+}
+
+
+
+
+
+
+}

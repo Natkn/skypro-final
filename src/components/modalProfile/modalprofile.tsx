@@ -2,19 +2,20 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './modalprofile.module.css';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/store/store';
 
 export interface ModalProfileProps {
-  isOpen: boolean;
-  onClose: () => void;
-  username: string;
-  email: string;
-  onLogout: () => void; 
+  isOpen?: boolean;
+    onClose: () => void;
+    username?: string;
+    email?: string;
+    onLogout: () => void;
 }
 
-const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, username, email, onLogout }) => {
+export const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, username, email, onLogout }) => {
     const modalRef = useRef<HTMLDivElement>(null);
      const router = useRouter();
-
+const { userData } = useAppSelector((state) => state.auth);
 
        const handleGoToProfile = () => {
         router.push('/profile'); 
@@ -41,7 +42,7 @@ const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, username, 
   return (
     <div className={styles.modalProfile}  ref={modalRef}>
       <div className={styles.modalprofileBox} onClick={(e) => e.stopPropagation()}>
-           <div className={styles.profileName}> {username}</div>
+           <div className={styles.profileName}> {userData?.email ? userData.email.split('@')[0] : 'User'}</div>
            <div className={styles.profileLogin}> {email}</div>
           <button className={styles.profile} onClick={handleGoToProfile}>Мой профиль</button>
             <button className={styles.logOut} onClick={onLogout}>Выйти</button>
