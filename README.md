@@ -1,6 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Описание проекта SkyFitnessPro
+SkyFitnessPro — это современное веб-приложение для онлайн-тренировок и обучения фитнесу, разработанное с использованием React и Next.js. Проект позволяет пользователям просматривать курсы, регистрироваться и авторизовываться, приобретать и проходить фитнес-программы, а также отслеживать свой прогресс.
 
-## Getting Started
+Основной функционал:
+-  Главная страница 
+Отображает все доступные курсы из базы данных. Доступна всем пользователям, независимо от статуса авторизации. На странице реализована кнопка «Наверх», которая при нажатии плавно прокручивает страницу к началу.
+
+-  Страница авторизации и регистрации
+Позволяет пользователям войти в систему или создать новый аккаунт. 
+
+-  Страница отдельного курса
+При выборе курса неавторизованный пользователь или пользователь без доступа видит описание курса и предложение авторизоваться или приобрести курс. Авторизованные пользователи могут добавить курс в свои избранные.
+
+-  Страница профиля
+Пользователь может просматривать свои личные данные, список избранных курсов и начинать тренировки.
+
+-  Страница тренировки
+Позволяет открывать материалы урока, включая видеоролики с YouTube, выполнять задания и отмечать прогресс по каждому уроку.
+
+Технологии и инструменты:
+Next.js — фреймворк для серверного рендеринга React-приложений и маршрутизации.
+React — библиотека для построения пользовательского интерфейса.
+Redux Toolkit и React-Redux — для управления состоянием приложения.
+Axios — для выполнения HTTP-запросов к API.
+TypeScript — для статической типизации и повышения надежности кода.
+Jest и React Testing Library — для написания и запуска тестов.
+ESLint и Prettier — для обеспечения качества и единообразия кода.
+
+Скрипты проекта:
+dev — запуск приложения в режиме разработки (next dev).
+build — сборка приложения для продакшена (next build).
+start — запуск собранного приложения (next start).
+
 
 First, run the development server:
 
@@ -13,26 +43,5 @@ pnpm dev
 # or
 bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 # skypro-final
