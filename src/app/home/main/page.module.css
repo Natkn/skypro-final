@@ -75,6 +75,9 @@ cursor: pointer;
   border-style: none;
 }
 
+.scrollToTopButton:hover{
+ background: #C6FF00;
+}
 
 
 .hero{

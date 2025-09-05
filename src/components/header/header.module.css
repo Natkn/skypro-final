@@ -52,6 +52,11 @@ cursor: pointer;
   border-style: none;
 }
 
+.loginButton:hover{
+  background: #C6FF00;
+
+}
+
 .nav{
    display: flex;
     flex-direction: row;

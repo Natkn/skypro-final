@@ -127,8 +127,7 @@ if (courseProgressData.workoutsProgress && courseProgressData.workoutsProgress.l
         height={32} 
         className={styles.cardminus} 
          onClick={handleRemoveClick}
-        
-         
+         title="Удалить курс"
       /></div>
     ) : (
         <IconOver Icon={

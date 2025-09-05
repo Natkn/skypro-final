@@ -72,8 +72,9 @@ border: 1px solid #000000;
 background-color: #FFFFFF;
 cursor: pointer;
 }
-
-
+.logOut:hover{
+background: #E9ECED;
+}
 
 
 .cards {

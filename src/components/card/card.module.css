@@ -118,6 +118,10 @@ letter-spacing: 0px;
 cursor: pointer;
 border-style: none;
 }
+.cardContinueButton:hover{
+background: #C6FF00;
+
+}
 
 
 .cardProgressLabel{

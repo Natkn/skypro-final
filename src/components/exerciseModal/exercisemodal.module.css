@@ -168,7 +168,10 @@ font-weight: 400;
 font-size: 18px;
 line-height: 110.00000000000001%;
 }
+.startButton:hover{
+background: #C6FF00;
 
+}
 
 .exerciseLabel{
   font-family: Roboto;
