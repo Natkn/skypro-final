@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react';
 import styles from './course.module.css';
 import star from '../../../../public/image/star.svg';
 import maskImage from '../../../../public/image/Maskgroup.svg';
-import MaskgroupMini from '../../../../public/image/MaskgroupMini.svg';
 import masklineImage from '../../../../public/image/Maskgroupline.png';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { addCourseToUser, getCourseById, getUserProfile, removeCourseFromUser } from '@/services/courses/courseApi';
-import { getImagePath, getSkillCardImage, getSkillCardImageMini } from '@/helpers/image';
+import { getSkillCardImage, getSkillCardImageMini } from '@/helpers/image';
 import { Course } from '@/libs/fitness';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { addFavoriteCourse, removeFavoriteCourse } from '@/services/feature/courseSlice';
 import {  setUserData, UserData } from '@/services/feature/authSlice';
-import Modal from '@/app/auth/signin/page';
+import ModalLayout from '@/app/auth/layout';
+import { handleAddCourse, handleRemoveCourse } from '@/helpers/coursehelpers/courseActions';
 
 
 interface CourseDetailPageProps {
@@ -23,12 +23,12 @@ interface CourseDetailPageProps {
 
 
 export default function CourseDetailPage({}: CourseDetailPageProps) {
-    const [course, setCourse] = useState<Course | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const { courseId } = useParams();
-    const dispatch = useAppDispatch();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const [course, setCourse] = useState<Course | null>(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);
+const { courseId } = useParams();
+const dispatch = useAppDispatch();
+const [isModalOpen, setIsModalOpen] = useState(false);
 const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
 const [isCourseAdded, setIsCourseAdded] = useState(false);
 const { userData } = useAppSelector((state) => state.auth);
@@ -51,62 +51,6 @@ useEffect(() => {
     setIsModalOpen(true);
   };
 
- const handleAddCourse = async () => {
-  if (!isAuthenticated) {
-    openModal();
-    return;
-  }
-  try {
-    if (courseId && typeof courseId === 'string' && course) {
-      await dispatch(addFavoriteCourse(courseId)); // обновляем redux
-      try {
-        await addCourseToUser(courseId); // обновляем сервер
-        try {
-          const updatedUserData = await getUserProfile(); // получаем обновлённые данные
-          dispatch(setUserData(updatedUserData)); // обновляем redux
-          setIsCourseAdded(true); // обновляем локальное состояние
-        } catch (userError: any) {
-          console.error("Error updating user data:", userError);
-          setError(userError.message || 'Failed to update user data.');
-        }
-      } catch (serverError: any) {
-        console.error("Error adding course to user on server:", serverError);
-        setError(serverError.message || 'Failed to add course to user.');
-      }
-    } else {
-      setError('Invalid course ID or course is null');
-      console.error('Invalid course ID or course is null');
-    }
-  } catch (error: any) {
-    setError(error.message);
-    console.error("Error adding course:", error);
-  }
-};
-
-const handleRemoveCourse = async () => {
-  try {
-    if (courseId && typeof courseId === 'string') {
-      await dispatch(removeFavoriteCourse(courseId)); // обновляем redux
-      try {
-        await removeCourseFromUser(courseId); // обновляем сервер
-        try {
-          const updatedUserData = await getUserProfile(); // получаем обновлённые данные
-          dispatch(setUserData(updatedUserData)); // обновляем redux
-          setIsCourseAdded(false); // обновляем локальное состояние
-        } catch (userError: any) {
-          console.error("Error updating user data:", userError);
-          setError(userError.message || 'Failed to update user data.');
-        }
-      } catch (serverError: any) {
-        console.error("Error removing course from user on server:", serverError);
-        setError(serverError.message || 'Failed to remove course from user.');
-      }
-    }
-  } catch (error: any) {
-    setError(error.message || 'Failed to remove course.');
-    console.error("Error removing course:", error);
-  }
-}
 
     useEffect(() => {
         const loadCourse = async () => {
@@ -141,12 +85,9 @@ const handleRemoveCourse = async () => {
     }
 
     
-
     const skillCardImage = courseId
         ? getSkillCardImage(Array.isArray(courseId) ? courseId[0] : courseId)
         : "/image/skillcard1.png";
-
-
 
          const skillCardImageMini = courseId
         ? getSkillCardImageMini(Array.isArray(courseId) ? courseId[0] : courseId)
@@ -167,9 +108,21 @@ const handleButtonClick = () => {
     openModal();
   } else {
     if (isCourseAdded) {
-      handleRemoveCourse();
+     handleRemoveCourse({
+        courseId: courseId as string,
+        dispatch,
+        setIsCourseAdded,
+        setError,
+      });
     } else {
-      handleAddCourse();
+      handleAddCourse({
+        courseId: courseId as string,
+        course,
+        isAuthenticated,
+        dispatch,
+        setIsCourseAdded,
+        setError,
+      });
     }
   }
 };
@@ -253,7 +206,7 @@ const handleUserLoggedIn = (userData: UserData) => {
                 </div>
                 <div className={styles.footerImage}>
                     <Image
-                        className={styles.maskImageWrapper}
+                      className={`${styles.desktopImage} ${styles.maskImageWrapper}`}
                         src={maskImage}
                         alt="Mask"
                         width={543}
@@ -266,21 +219,16 @@ const handleUserLoggedIn = (userData: UserData) => {
                         width={1160}
                         height={540}
                     />
-                     <Image
-                        className={`${styles.mobileImage} ${styles.masklineImageWrapperMini}`}
-                        src={MaskgroupMini}
-                        alt="Maskline"
-                        width={432}
-                        height={252}
-                    />
-                </div>
+                 
+                </div> 
             </div>
-          <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-       onUserRegistered={handleUserRegistered}
-       onUserLoggedIn={handleUserLoggedIn} 
-      />
+             <div className={styles.backgroundImages}></div>
+         <ModalLayout
+  isOpen={isModalOpen}
+  onClose={handleCloseModal}
+  onUserRegistered={handleUserRegistered}
+  onUserLoggedIn={handleUserLoggedIn}
+/>
 
         </>
     );

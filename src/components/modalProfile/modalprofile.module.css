@@ -2,7 +2,7 @@
 
 .modalProfile {
    position: absolute; 
-     top: 16%;
+     top: 8%;
     right: 0;
     width: auto;
     height:auto;
@@ -98,13 +98,27 @@ letter-spacing: 0px;
 
 
 .modalProfile{
-        position: absolute;
-        left: 84px;
-        top: 84px;
+  position: absolute;
+ left: 84px;
+ top: 84px;
+ right: 30px;
+box-shadow: 0px 4px 67px -12px #000000db;
+ width: auto;
+ border-radius: 30px;
 }
 
 
-
+.modalprofileBox{
+    text-align: center;
+     height: 246px;
+     width: 234px;
+    border-radius: 30px;
+    padding: 20px;
+    background-color: #fff;
+    text-align: center;
+    gap: 34px;
+  
+}
 
 
 

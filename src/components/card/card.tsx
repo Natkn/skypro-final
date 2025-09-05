@@ -4,10 +4,9 @@ import styles from './card.module.css';
 import Image from "next/image";
 import { getImagePath } from '@/helpers/image'; 
 import IconOver from './iconover';
-import { CalendarIcon, ScaleIcon, TimeIcon } from '@/components/card/icon'; 
+import { CalendarIcon,  ScaleIcon, TimeIcon } from '@/components/card/icon'; 
 import Progress from '@/helpers/progress/progress';
 import iconMinus from "../../../public/image/iconMinus.svg";
-
 import { removeFavoriteCourse } from '@/services/feature/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setUserData } from '@/services/feature/authSlice';
@@ -18,7 +17,7 @@ import { roundProgress } from '@/utils/progressUtils';
 
 
 
-const Card: React.FC<CardProps> = ({  _id,name, nameEN, durationInDays, dailyDurationInMinutes, complexity, showProgress = false,  height = 501}) => {
+const Card: React.FC<CardProps> = ({  _id,name, nameEN,difficulty,  durationInDays, dailyDurationInMinutes, showProgress = false,  height = 501}) => {
     const imageSrc = getImagePath(nameEN);
     const dispatch = useAppDispatch();
     const { userData } = useAppSelector((state) => state.auth);
@@ -117,6 +116,7 @@ if (courseProgressData.workoutsProgress && courseProgressData.workoutsProgress.l
         width={300} 
         height={200} 
         className={styles.cardImage} 
+        priority
       />
       {showProgress ? (
                   <div className={styles.imageContainer}>
@@ -153,9 +153,10 @@ if (courseProgressData.workoutsProgress && courseProgressData.workoutsProgress.l
                 <p className={styles.cardDetail}>{dailyDurationInMinutes?.from}-{dailyDurationInMinutes?.to} мин/день</p>
             </div>
      <div className={styles.cardDetailItem}>
-         <ScaleIcon/> 
+       <ScaleIcon difficulty={difficulty} />
+
                 <p className={styles.cardDetail}> 
-                  Сложность {complexity}</p>
+                  Сложность </p>
             </div>
              {showProgress && (
 <div className={styles.cardprofileProgress}>

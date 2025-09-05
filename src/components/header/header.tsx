@@ -3,22 +3,13 @@ import  { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "@/components/header/header.module.css";
 import logo from "../../../public/image/logo.svg";
-import Modal from '../../app/auth/signin/page'; 
 import arrow from "../../../public/image/arrow.svg";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import ModalProfile from "../modalProfile/modalprofile";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
 import { clearUserData, setUserData, UserData } from "@/services/feature/authSlice";
-import { loadStateFromLocalStorage } from "@/services/feature/courseSlice";
-
-interface User {
-  username: string;
-  email: string;
-  
-}
+import ModalLayout from "@/app/auth/layout";
 
 
 const Header = () => {
@@ -30,7 +21,6 @@ const { userData } = useAppSelector((state) => state.auth);
   const user = useAppSelector(state => state.auth.userData);
   const dispatch = useAppDispatch();
 
-  // При монтировании компонента загружаем пользователя из localStorage в Redux
 useEffect(() => {
   const storedUser = localStorage.getItem('authUser');
   if (storedUser) {
@@ -83,6 +73,10 @@ const handleUserLoggedIn = (userData: UserData) => {
     router.push('/home/main');
   };
 
+   const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.logoContainer}>
@@ -114,7 +108,7 @@ const handleUserLoggedIn = (userData: UserData) => {
             />
             <span className={styles.username}>{userData?.email ? userData.email.split('@')[0] : 'User'}</span>
             <span className={styles.profileArrow} onClick={openProfileModal}>
-                <Image src={arrow} alt="arrow" width={8} height={8} /></span> 
+                <Image src={arrow} alt="arrow" width={8} height={8} priority/></span> 
           </div>
         ) : ( 
           <button className={styles.loginButton} onClick={openModal}>
@@ -123,11 +117,12 @@ const handleUserLoggedIn = (userData: UserData) => {
         )}
       </nav>
 
-      <Modal
-       isOpen={isModalOpen} 
-      onClose={closeModal} 
-      onUserRegistered={handleUserRegistered}
-       onUserLoggedIn={handleUserLoggedIn} />
+    <ModalLayout
+  isOpen={isModalOpen}
+   onClose={handleCloseModal}
+  onUserRegistered={handleUserRegistered}
+  onUserLoggedIn={handleUserLoggedIn}
+/>
 
         <ModalProfile
         isOpen={isProfileModalOpen}

@@ -1,3 +1,4 @@
+import { Difficulty } from "@/components/card/icon";
 
 
 export interface Course {
@@ -15,7 +16,7 @@ export interface Course {
     from: number;
     to: number;
   };
-  complexity: string;
+  difficulty: string;
 }
 
 export interface CourseProgressResponse {
@@ -63,7 +64,7 @@ export interface CardProps {
     from: number;
     to: number;
   };
-  complexity: string;
+  difficulty: Difficulty;
   order: number;
   onContinueClick?: (_id: string, nameEN: string) => void;
   showProgress?: boolean;

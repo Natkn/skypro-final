@@ -62,7 +62,6 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
             localStorage.setItem(`exercisesProgress-${courseId}`, JSON.stringify(initialProgress));
 
           
-      console.log("Сохраняем progress на сервере:", courseId, workoutId, progressData);
       exercises.forEach((exercise, index) => {
         const action = setExerciseProgress({
           workoutId: workoutId,

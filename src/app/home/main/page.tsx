@@ -4,14 +4,12 @@
 import  { useState, useEffect } from 'react';
 import styles from "@/app/home/main/page.module.css";
 import Card from '@/components/card/card';
-import headerpic from "../../../../public/image/headerpic.svg";
 import Image from "next/image";
-import { Course } from '@/libs/fitness'; 
 import { useRouter } from 'next/navigation';
 import { getCourses } from '@/services/courses/courseApi';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setAllCourses } from '@/services/feature/courseSlice';
-import { useSelector } from 'react-redux';
+import { Difficulty } from '@/components/card/icon';
 
 
 
@@ -46,10 +44,8 @@ useEffect(() => {
     });
   };
 
-
   const numCards = 5;
   const visibleCourses = allCourses.slice(0, numCards);
-
 
     const handleCourseClick = (courseId: string) => {
     router.push(`/courses/${courseId}`);
@@ -64,7 +60,13 @@ useEffect(() => {
           <div className={styles.hero}>
                <div className={styles.heroBox}>
             Начните заниматься спортом и улучшите качество жизни</div>
-            <Image  className={styles.headerpic} src={headerpic} alt="Логотип" width={288} height={120} />
+            <Image 
+             className={styles.headerpic} 
+               src="/image/headerpic.svg" 
+              alt="Логотип" 
+              width={288}
+               height={120}
+                 />
           </div>
           <section className={styles.cards}>
             <div className={styles.cardsRow}>
@@ -78,7 +80,7 @@ useEffect(() => {
                      nameRU={course.nameRU} 
                     durationInDays={course.durationInDays}
                     dailyDurationInMinutes={course.dailyDurationInMinutes}
-                    complexity={course.complexity}
+                    difficulty={course.difficulty as Difficulty}
                     order={course.order}
                   />
                 </div>

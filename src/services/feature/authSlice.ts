@@ -84,7 +84,6 @@ const authSlice = createSlice({
 
     },
     clearUserData: (state) => {
-       console.log("Вызываем clearUserData");
       state.username = '';
       state.access = '';
       state.refresh = '';
@@ -94,7 +93,6 @@ const authSlice = createSlice({
       localStorage.removeItem('access');
       localStorage.removeItem('refresh');
        localStorage.removeItem('userData');
-           console.log("localStorage очищен");
     },
   },
 });

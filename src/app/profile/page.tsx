@@ -7,29 +7,29 @@ import Card from '@/components/card/card';
 import { Course } from '@/libs/fitness';
 import { useRouter } from 'next/navigation'; 
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { ModalProfileProps } from '@/components/modalProfile/modalprofile';
-import { getCourseProgress, getCourses, getUserProfile } from '@/services/courses/courseApi';
+import { getCourses, getUserProfile } from '@/services/courses/courseApi';
 import { clearUserData, setIsAuthenticated, setUserData } from '@/services/feature/authSlice';
 import { setAllCourses } from '@/services/feature/courseSlice';
+import { Difficulty } from '@/components/card/icon';
 
 
 interface ProfileProps {
-    onLogout: () => void; // Определение типа для onLogout
+    onLogout: () => void;
 }
 
 export function filterCoursesByIds(courses: Course[], courseId: string[]): Course[] {
   return courses.filter((course) => courseId.includes(course._id));
 }
 export default function Profile({}:ProfileProps) {
-    const { allCourses } = useAppSelector((state) => state.courses);
-   const { userData } = useAppSelector((state) => state.auth);
-    const dispatch = useAppDispatch();
+ const { allCourses } = useAppSelector((state) => state.courses);
+const { userData } = useAppSelector((state) => state.auth);
+const dispatch = useAppDispatch();
  const router = useRouter(); 
-    const selectedCourseIds = userData?.selectedCourses || [];
-     const selectedCourses = allCourses && allCourses.length > 0 ? filterCoursesByIds(allCourses, selectedCourseIds) : [];
+ const selectedCourseIds = userData?.selectedCourses || [];
+ const selectedCourses = allCourses && allCourses.length > 0 ? filterCoursesByIds(allCourses, selectedCourseIds) : [];
 
 
-     const [isClient, setIsClient] = useState(false); 
+  const [isClient, setIsClient] = useState(false); 
 useEffect(() => {
     setIsClient(true); 
   }, []);
@@ -67,12 +67,6 @@ if (!isClient) {
 }
 
 
-
-    const handleContinueClick = (courseId: string) => {
-        console.log(`Продолжить курс с ID: ${courseId}`);
-    };
-
-
     
  const handleLogout = () => {
     localStorage.removeItem('authUser');
@@ -96,6 +90,7 @@ if (!isClient) {
                              alt="profilephoto" 
                              width={197} 
                              height={197}
+                             priority
                               />
                              
                         </div>
@@ -127,9 +122,8 @@ if (!isClient) {
                                      nameRU={course.nameRU}
                                     durationInDays={course.durationInDays}
                                     dailyDurationInMinutes={course.dailyDurationInMinutes}
-                                    complexity={course.complexity}
+                                    difficulty={course.difficulty as Difficulty}
                                     order={course.order}           
-                                    onContinueClick={handleContinueClick}
                                     showProgress={true}
                                 />
                             ))

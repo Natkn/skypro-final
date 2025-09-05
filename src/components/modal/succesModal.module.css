@@ -31,3 +31,27 @@
 .successModal p {
   margin-bottom: 34px;
 }
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+
+.successmodalBox{
+   text-align: center;
+    z-index: 1001;
+    width: 343px;
+    height: 252px;
+    border-radius: 30px;
+    padding: 40px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 67px -12px #00000021; 
+    font-weight: 400;
+    font-size: 32px;
+  
+  }
+
+
+
+
+
+
+}

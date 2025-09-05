@@ -150,7 +150,10 @@ display: flex
 .modal__input {
     outline: none; 
 }
-
+.inputError {
+  border: 1px solid red;
+  outline: none;
+}
 
 
 @media screen and (min-width: 357px) and (max-width: 768px) {
@@ -176,4 +179,8 @@ gap: 0px;
 border: 1px solid #D0CECE
 }  
 
+}
+.inputError {
+  border: 1px solid red;
+  outline: none;
 }

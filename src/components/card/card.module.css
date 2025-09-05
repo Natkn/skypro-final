@@ -143,6 +143,7 @@ border-style: none;
   
   .cardInfo{
     padding-left: 22px;
+    width: 320px;
   }
   
   .cardProgressLabel{
