@@ -1,0 +1,208 @@
+
+.profileBox{
+
+height: 341px;
+gap: 40px;
+margin-bottom: 60px;
+}
+
+
+
+.profileBoxTitle{
+  font-family: Roboto;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 40px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+margin-bottom: 40px;
+width: 250px;
+}
+
+.profile{
+  width: 1160px;
+height: 257px;
+background: #FFFFFF;
+opacity: 1;
+gap: 10px;
+border-radius: 30px;
+padding: 30px;
+display: flex;
+}
+
+.profileInfo{
+  width: 530px;
+height: 197px;
+opacity: 1;
+gap: 33px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.profileData{
+     display: flex
+;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 300px;
+gap: 44px;
+
+}
+
+.profileName{
+font-weight: 500;
+font-size: 32px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+
+
+}
+
+.logOut{
+width: 192px;
+height: 52px;
+border-radius: 46px;
+border-width: 1px;
+padding-top: 16px;
+padding-right: 26px;
+padding-bottom: 16px;
+padding-left: 26px;
+border: 1px solid #000000;
+background-color: #FFFFFF;
+cursor: pointer;
+}
+.logOut:hover{
+background: #E9ECED;
+}
+
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+
+
+}
+
+.cardsRow {
+   display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 40px;
+}
+
+
+
+.card {
+height: 649px;
+border-radius: 30px;
+padding-bottom: 15px;
+gap: 24px;
+opacity: 1;
+
+}
+
+
+
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.removeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.removeButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+   .profileBoxTitle{
+ font-weight: 500;
+ font-size: 24px;
+ margin-bottom: 20px;
+
+   }
+  
+
+   .profile{
+    width: 343px; 
+    height: 365px;
+   }
+
+   .profileImage{
+    width: 141px;
+    height: 141px;
+  }
+
+    .profileInfo{
+  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+
+  .profileBox{
+    height: 365px;
+     width: 343px;
+
+  }
+
+
+.profileName{
+  font-size: 24px;
+}
+
+.profileLogin{
+  font-size: 16px;
+}
+
+
+.logOut{
+  width: 283px;
+height: 50px;
+gap: 10px;
+border-radius: 46px;
+border-width: 1px;
+padding-top: 16px;
+padding-right: 26px;
+padding-bottom: 16px;
+padding-left: 26px;
+
+}
+.profileData{
+  display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  gap: 18px;
+}
+
+
+  .cardBox{
+ margin-top: 80px;
+ 
+  }
+  .cardsRow {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  grid-gap: 12px;
+
+}
+  
+  
+  
+  }

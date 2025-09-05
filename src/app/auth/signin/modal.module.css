@@ -1,0 +1,186 @@
+
+ .modalOverlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+width: 100%;
+height: 100%;
+padding: 40px;
+box-shadow: 0px 4px 17px 120px rgb(0 0 0 / 19%);
+background-color: rgb(0 0 0 / 19%);
+padding-right: 0rem;
+padding-left: 0rem;
+
+    top: 0px;
+}
+
+.modalContent {
+background-color: white;
+width: 360px;
+opacity: 1;
+gap: 34px;
+border-radius: 30px;
+padding: 40px;
+}
+
+.modalInput{
+margin-bottom: 34px;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal__input {
+ width: 280px;
+height: 52px;
+border-radius: 8px;
+opacity: 1;
+border-width: 1px;
+padding-top: 16px;
+padding-right: 18px;
+padding-bottom: 16px;
+padding-left: 18px;
+}
+
+.modal__input::-webkit-input-placeholder {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.05px;
+  color: #d0cece;
+}
+
+.modal__btnSignupEnt {
+    padding: 10px;
+    border: none;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+  background: #BCEC30;
+width: 280px;
+height: 52px;
+border-radius: 46px;
+opacity: 1;
+color: black;
+font-family: Roboto;
+font-weight: 400;
+font-size: 18px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+
+}
+
+.modal__btnSignupEnt:hover{
+ background: #C6FF00;;
+}
+
+.modal__btnSigninEnt{
+      padding: 10px;
+    border: none;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+     border: 1px solid #000000;
+   font-family: Roboto;
+   width: 280px;
+height: 52px;
+border-radius: 46px;
+font-weight: 400;
+font-style: Regular;
+font-size: 18px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+color: black;
+  background: white;
+}
+
+.modal__btnSigninEnt:hover{
+ background: #F7F7F7;
+
+}
+
+
+
+.modal__btnSignupEnt:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.errorContainer {
+border-radius: 46px;
+color: red;
+display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+
+.btnContainer{
+display: flex
+;
+    flex-direction: column;
+    gap:10px ;
+}
+
+.inputError {
+    border: 1px solid #DB0030;
+}
+
+.error {
+    color: #DB0030;
+    font-size: 0.8em;
+    margin-top: 0.2em;
+}
+
+.modal__input {
+    outline: none; 
+}
+.inputError {
+  border: 1px solid red;
+  outline: none;
+}
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+  
+  .modalOverlay{
+    z-index: 1200;
+   width: auto;
+  }
+
+.modalCloseButton{
+  display: none;
+}
+
+.modalContent{
+   width: 343px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 0px;
+}
+
+.modal__input{
+border: 1px solid #D0CECE
+}  
+
+}
+.inputError {
+  border: 1px solid red;
+  outline: none;
+}
