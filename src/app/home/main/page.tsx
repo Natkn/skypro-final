@@ -19,6 +19,7 @@ const router = useRouter();
   const dispatch = useAppDispatch();
   const { allCourses } = useAppSelector((state) => state.courses);
 const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated);
+ const [error, setError] = useState<string | null>(null);
 
 useEffect(() => {
   const loadCourses = async () => {
@@ -26,8 +27,8 @@ useEffect(() => {
       const coursesData = await getCourses();
       const sortedCourses = [...coursesData].sort((a, b) => a.order - b.order);
       dispatch(setAllCourses(sortedCourses)); 
-    } catch (error) {
-      console.error("Failed to load courses:", error);
+         } catch (error: any) {
+       setError(error.message);
     } finally {
       setIsLoading(false); 
     }
@@ -43,6 +44,14 @@ useEffect(() => {
       behavior: "smooth",
     });
   };
+
+  if (isLoading) {
+    return <div>Loading courses...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   const numCards = 5;
   const visibleCourses = allCourses.slice(0, numCards);
