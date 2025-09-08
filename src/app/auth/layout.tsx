@@ -34,7 +34,7 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.modalCloseButton} onClick={onClose}>
-          &times;
+        
         </button>
         <Image src={logo} alt="Logo" width={220} height={35} priority />
         {modalMode === ModalMode.LOGIN && (

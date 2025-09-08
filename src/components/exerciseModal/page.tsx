@@ -18,6 +18,58 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
     setLocalExerciseProgress({ ...exerciseProgress, [exerciseId]: value });
   };
 
+ useEffect(() => {
+    if (workoutId && exercises.length > 0) {
+        const initialProgress: { [exerciseId: string]: number } = {};
+        exercises.forEach((exercise: ExerciseType) => {
+            const progressInStore = progressFromStore[workoutId]?.[exercise.name];
+            initialProgress[exercise._id] = progressInStore !== undefined ? progressInStore : 0;
+        });
+
+        setLocalExerciseProgress(initialProgress);
+    }
+}, [workoutId, exercises, progressFromStore]);
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      if (!workoutId) {
+        setError('Workout ID is missing.');
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const authToken = localStorage.getItem('authToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!authToken || !refreshToken) {
+          throw new Error("No authentication tokens found");
+        }
+
+        const token = {
+          token: authToken,
+          refreshToken: refreshToken,
+        };
+        const workoutData: WorkoutDetails = await getWorkoutById(workoutId, token);
+        setExercises(workoutData.exercises);
+
+      } catch (e: unknown) {
+                if (e instanceof Error) {
+                    setError(e.message);
+                } else {
+                    setError("Произошла неизвестная ошибка"); 
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+    if (isOpen) {
+      fetchExercises();
+    }
+  }, [workoutId, isOpen]);
 
   const handleSaveProgress = async () => {
     setLoading(true);
@@ -46,8 +98,8 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
             if (storedProgress) {
                 try {
                     initialProgress = JSON.parse(storedProgress);
-                } catch (e: any) {
-                    console.error("Error parsing stored progress:", e);
+                } catch  {
+                    console.error("Error parsing stored progress:");
                 }
             }
 
@@ -73,8 +125,12 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
 
       onClose(true, progressData);
 
-    } catch (error: any) {
-      setError(`Ошибка сохранения прогресса: ${error.message}`);
+} catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(`Ошибка сохранения прогресса: ${error.message}`);
+      } else {
+        setError("Ошибка сохранения прогресса: Произошла неизвестная ошибка");
+      }
     } finally {
       setLoading(false);
     }
@@ -85,56 +141,11 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
   }
 
 
-  useEffect(() => {
-    if (workoutId && exercises.length > 0) {
-      let initialProgress: { [exerciseId: string]: number } = {};
-      exercises.forEach(exercise => {
-          const progressInStore = progressFromStore[workoutId]?.[exercise.name]
-          initialProgress[exercise._id] = progressInStore !== undefined ? progressInStore : 0;
-      });
-
-      setLocalExerciseProgress(initialProgress);
-    }
-  }, [workoutId, exercises, progressFromStore]);
 
 
 
-  useEffect(() => {
-    const fetchExercises = async () => {
-      if (!workoutId) {
-        setError('Workout ID is missing.');
-        return;
-      }
 
-      setLoading(true);
-      setError(null);
 
-      try {
-        const authToken = localStorage.getItem('authToken');
-        const refreshToken = localStorage.getItem('refreshToken');
-
-        if (!authToken || !refreshToken) {
-          throw new Error("No authentication tokens found");
-        }
-
-        const token = {
-          token: authToken,
-          refreshToken: refreshToken,
-        };
-        const workoutData: WorkoutDetails = await getWorkoutById(workoutId, token);
-        setExercises(workoutData.exercises);
-
-      } catch (e: any) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isOpen) {
-      fetchExercises();
-    }
-  }, [workoutId, isOpen]);
 
 
 

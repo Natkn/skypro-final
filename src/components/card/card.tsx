@@ -10,7 +10,7 @@ import iconMinus from "../../../public/image/iconMinus.svg";
 import { removeFavoriteCourse } from '@/services/feature/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setUserData } from '@/services/feature/authSlice';
-import { removeCourseFromUser, getCourseProgress } from '@/services/courses/courseApi';
+import {  getCourseProgress } from '@/services/courses/courseApi';
 import WorkoutModal from '../workoutModal/page';
 import { CardProps, WorkoutProgress } from '@/libs/fitness';
 import { roundProgress } from '@/utils/progressUtils';
@@ -23,7 +23,6 @@ const Card: React.FC<CardProps> = ({  _id,name, nameEN,difficulty,  durationInDa
     const { userData } = useAppSelector((state) => state.auth);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
 
@@ -35,16 +34,15 @@ const handleRemoveClick = async () => {
         selectedCourses: userData.selectedCourses.filter(courseId => courseId !== _id),
       }));
       try {
-      const response = await removeCourseFromUser(_id);
-    } catch (error: any) {
-      console.error('Error removing course from server:', error.message);
+   } catch (error: unknown) {
+    console.error('Error removing course from server:',error);
     }
     }
   };
 
     useEffect(() => {
         const fetchCourseProgress = async () => {
-            setLoading(true);
+          
             setError(null);
             try {
                 const authToken = localStorage.getItem('authToken');
@@ -79,11 +77,13 @@ if (courseProgressData.workoutsProgress && courseProgressData.workoutsProgress.l
 }
                 setProgress(totalProgress);
 
-            } catch (e: any) {
-                setError(e.message);
-            } finally {
-                setLoading(false);
-            }
+           } catch (e: unknown) {
+                if (e instanceof Error) {
+                    setError(e.message);
+                } else {
+                    setError("Произошла неизвестная ошибка"); 
+                }
+            } 
         };
 
         if (showProgress) {
@@ -106,6 +106,10 @@ if (courseProgressData.workoutsProgress && courseProgressData.workoutsProgress.l
     } else if (roundProgress(progress) === 100) {
         buttonText = "Начать заново";
     }
+
+    if (error) {
+    return <div>Error: {error}</div>; 
+  }
 
   return (
      <div className={styles.card} style={{ height: `${height}px` }}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./modal.module.css";
+import styles from "../authLayout.module.css";
 import { authUser } from "@/services/courses/authApi";
 import { UserData } from "@/services/feature/authSlice";
 
@@ -50,13 +50,16 @@ const SignIn: React.FC<LoginProps> = ({ onSwitchToRegister, onUserLoggedIn, onCl
         selectedCourses: [],
       });
 
-      onClose();
-    } catch (error: any) {
-      if (error.message === "Invalid credentials") {
+ onClose();
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "Invalid credentials") {
         setLoginError("Неверный логин или пароль");
         setPasswordError("Неверный логин или пароль");
-      } else {
+      } else if (error instanceof Error) {
         setErrorMessage(error.message || "Произошла ошибка при входе");
+      }
+      else {
+          setErrorMessage("Произошла неизвестная ошибка");
       }
     } finally {
       setIsLoading(false);
