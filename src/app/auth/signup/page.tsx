@@ -62,7 +62,7 @@ const SignUp: React.FC<SignUpProps> = ({ onUserRegistered, onSwitchToLogin, onCl
 
     try {
       const data = { email, password };
-      const response = await registerUser(data);
+         await registerUser(data);
 
       onUserRegistered({
         _id: "",
@@ -72,11 +72,13 @@ const SignUp: React.FC<SignUpProps> = ({ onUserRegistered, onSwitchToLogin, onCl
       });
 
       onClose();
-    } catch (error: any) {
-      if (error.message === "Email already exists") {
+   } catch (error: unknown) {
+      if (error instanceof Error && error.message === "Email already exists") {
         setEmailError("Данная почта уже используется. Попробуйте войти.");
-      } else {
+      } else if (error instanceof Error) {
         setErrorMessage(error.message || "Произошла ошибка при регистрации");
+      } else {
+        setErrorMessage("Произошла неизвестная ошибка при регистрации");
       }
     } finally {
       setIsLoading(false);

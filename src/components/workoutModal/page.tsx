@@ -18,7 +18,7 @@ interface WorkoutsModalProps {
 }
 
 
-export default function WorkoutModal({_id,onClose}:WorkoutsModalProps){
+export default function WorkoutModal({_id}:WorkoutsModalProps){
 const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [selectedWorkouts, setSelectedWorkouts] = useState<string[]>([]);
   const router = useRouter();
@@ -72,7 +72,7 @@ const handleContinueClick = () => {
             try {
               const workoutDetails = await getWorkoutById(workout._id, { token: token }); 
               return { ...workout, exercises: workoutDetails.exercises }; 
-            } catch (exerciseError: any) {
+            } catch (exerciseError: unknown) {
               console.error(`Error fetching exercises for workout ${workout._id}:`, exerciseError);
               return workout; 
             }
@@ -80,8 +80,12 @@ const handleContinueClick = () => {
         );
 
         setWorkouts(workoutsWithExercises);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Произошла неизвестная ошибка."); 
+        }
       } finally {
         setLoading(false);
       }

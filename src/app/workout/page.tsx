@@ -67,7 +67,7 @@ export default function WorkoutPage({ _id }: Workout) {
                 if (storedProgress) {
                     try {
                         initialProgress = JSON.parse(storedProgress);
-                    } catch (e: any) {
+                   } catch (e: unknown) {
                         console.error("Error parsing stored progress:", e);
                     }
                 }
@@ -79,7 +79,7 @@ export default function WorkoutPage({ _id }: Workout) {
                 if (storedIsProgressFilled) {
                     try {
                         setIsProgressFilled(JSON.parse(storedIsProgressFilled));
-                    } catch (e: any) {
+                   } catch (e: unknown) {
                         console.error("Error parsing isProgressFilled:", e);
                     }
                 }
@@ -113,8 +113,12 @@ export default function WorkoutPage({ _id }: Workout) {
             }
 
 
-        } catch (fetchError: any) {
-            setError(fetchError.message);
+       } catch (fetchError: unknown) {
+            if (fetchError instanceof Error) {
+                setError(fetchError.message);
+            } else {
+                setError("Произошла неизвестная ошибка при получении данных."); 
+            }
         } finally {
             setLoading(false);
         }
@@ -139,9 +143,9 @@ export default function WorkoutPage({ _id }: Workout) {
         setIsModalOpen(true);
     };
 
-  const closeModal = (success: boolean, progressData?: number[]) => {
-        setIsModalOpen(false);
-        setShowSuccessMessage(true);
+const closeModal = (success: boolean) => { 
+  setIsModalOpen(false);
+  setShowSuccessMessage(true);
 
         if (success) {
          const newIsProgressFilled = { ...isProgressFilled, [selectedWorkoutId!]: true };  
@@ -160,7 +164,7 @@ export default function WorkoutPage({ _id }: Workout) {
             if (storedProgress) {
                 try {
                     initialProgress = JSON.parse(storedProgress);
-                } catch (e: any) {
+                } catch (e: unknown) {
                     console.error("Error parsing stored progress:", e);
                 }
             }
@@ -181,7 +185,7 @@ export default function WorkoutPage({ _id }: Workout) {
             <div className={styles.workoutContainer}>
                 {workouts
                     .filter(workout => selectedWorkouts.includes(String(workout._id)))
-                    .map((workout, workoutIndex) => {
+                    .map((workout) => {
                          const nameParts = workout.name.split(" / ");
                         const workoutName = nameParts[0] || workout.name;
                         return (

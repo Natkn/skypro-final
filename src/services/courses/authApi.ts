@@ -37,17 +37,18 @@ export const authUser = async (
       },
     });
     return response.data;
-   } catch (error: any) {
+  } catch (error: unknown) {
     let message = 'Ошибка при аутентификации:';
-    if (error.response) {
-         message = error.response.data.message; 
-    } else if (error.request) {
-        message = 'Нет ответа от сервера';
+
+    if (error instanceof Error) {
+        const err = error as { response?: { data?: { message?: string } }, request?: unknown }; 
+        message = err.response?.data?.message || err.request ? 'Нет ответа от сервера' : message || 'Произошла неизвестная ошибка';
     } else {
-       message = error.message;
+        message = typeof error === 'string' ? error : 'Произошла неизвестная ошибка при аутентификации';
     }
+
     console.error(message, error);
-    throw new Error(message); 
+    throw new Error(message);
   }
 };
 
@@ -80,16 +81,24 @@ export const registerUser = async (
       },
     });
     return response.data;
-  } catch (error: any) {
+ } catch (error: unknown) {
     let message = 'Ошибка при регистрации:';
-    if (error.response) {
-      message = error.response.data.message; 
-    } else if (error.request) {
-      message = 'Нет ответа от сервера';
+    
+    if (error instanceof Error) {
+        const err = error as { response?: { data?: { message?: string } }, request?: unknown };
+        
+        if (err.response?.data?.message) {
+            message = err.response.data.message;
+        } else if (err.request) {
+            message = 'Нет ответа от сервера';
+        } else if (message) {
+            message = message;
+        }
     } else {
-      message = error.message;
+        message = typeof error === 'string' ? error : 'Произошла неизвестная ошибка при регистрации';
     }
+
     console.error(message, error);
-    throw new Error(message); 
+    throw new Error(message);
   }
 };

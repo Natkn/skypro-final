@@ -3,11 +3,6 @@ import axios from 'axios';
 import { CardProps, Course, CourseProgressResponse, ExerciseType, UserProfile } from '@/libs/fitness';
 import { BASE_URL } from '@/helpers/constant';
 
-
-
-type courseUserProp = {
-  courseId: string;
-};
 type ApiError = {
   error?: string;
   message?: string;
@@ -145,9 +140,18 @@ export const getUserProfile = async (): Promise<UserProfile> => {
       },
     });
      return response.data.user;
-  } catch (error: any) {
+} catch (error: unknown) {
     console.error('Error fetching user profile:', error);
-    throw new Error(error.response?.data?.message || 'Failed to fetch user profile.');
+    let message = 'Failed to fetch user profile.';
+
+    if (error instanceof Error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        message = err.response?.data?.message || message || message;
+    } else if (typeof error === 'string') {
+        message = error;
+    }
+
+    throw new Error(message);
   }
 };
 
@@ -172,11 +176,18 @@ export const addCourseToUser = async (courseId: string) => {
     );
 
     return response.data;
-  } catch (error: any) {
-    console.error('Error adding course to user:', error);
-    throw new Error(error.response?.data?.message || 'Failed to add course.');
+} catch (error: unknown) {
+  console.error('Error adding course to user:', error);
+  let message = 'Failed to add course.';
+  if (error instanceof Error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    message = err.response?.data?.message || error.message || message;
+  } else if (typeof error === 'string') {
+    message = error;
   }
+  throw new Error(message);
 };
+}
 
 export const removeCourseFromUser = async (courseId: string) => {
   try {
@@ -194,11 +205,20 @@ export const removeCourseFromUser = async (courseId: string) => {
     });
 
     return response.data;
-  } catch (error: any) {
-    console.error('Error removing course from user:', error);
-    throw new Error(error.response?.data?.message || 'Failed to remove course.');
+} catch (error: unknown) {
+  console.error('Error removing course from user:', error);
+  let message = 'Failed to remove course.';
+
+  if (error instanceof Error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    message = err.response?.data?.message || error.message || message;
+  } else if (typeof error === 'string') {
+    message = error;
   }
+
+  throw new Error(message);
 };
+}
 
 export const saveWorkoutProgress = async (
   courseId: string,

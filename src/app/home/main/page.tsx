@@ -27,14 +27,16 @@ useEffect(() => {
       const coursesData = await getCourses();
       const sortedCourses = [...coursesData].sort((a, b) => a.order - b.order);
       dispatch(setAllCourses(sortedCourses)); 
-    } catch (error: unknown) {
-       if (error instanceof Error) {
-         setError(error.message);
-       } else {
-         setError(String(error));
-       }
+   } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Failed to load courses:', error);
+        setError(error.message);
+      } else {
+        console.error('Failed to load courses:', error);
+        setError(String(error));
+      }
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 

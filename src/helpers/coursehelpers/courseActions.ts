@@ -1,20 +1,19 @@
-import { Dispatch } from 'react';
+import { Dispatch } from 'redux';
 import { addFavoriteCourse, removeFavoriteCourse } from '@/services/feature/courseSlice';
 import { setUserData, UserData } from '@/services/feature/authSlice';
 import { addCourseToUser, getUserProfile, removeCourseFromUser } from '@/services/courses/courseApi';
 
 interface Params {
   courseId: string;
-  course?: any; 
+ course?: object;
   isAuthenticated: boolean;
-  dispatch: Dispatch<any>;
+  dispatch: Dispatch;
   setIsCourseAdded: (value: boolean) => void;
   setError: (error: string | null) => void;
 }
 
 export const handleAddCourse = async ({
   courseId,
-  course,
   isAuthenticated,
   dispatch,
   setIsCourseAdded,
@@ -31,10 +30,15 @@ export const handleAddCourse = async ({
     dispatch(setUserData(updatedUserData));
     setIsCourseAdded(true);
     setError(null);
-  } catch (error: any) {
+ } catch (error: unknown) {
+  if (error instanceof Error) {
     console.error("Error adding course:", error);
-    setError(error.message || 'Failed to add course.');
+    setError(error.message);
+  } else {
+    console.error("Error adding course:", error);
+    setError('Failed to add course.'); 
   }
+}
 };
 
 export const handleRemoveCourse = async ({
@@ -50,8 +54,13 @@ export const handleRemoveCourse = async ({
     dispatch(setUserData(updatedUserData));
     setIsCourseAdded(false);
     setError(null);
-  } catch (error: any) {
+ } catch (error: unknown) {
+  if (error instanceof Error) {
     console.error("Error removing course:", error);
-    setError(error.message || 'Failed to remove course.');
+    setError(error.message);
+  } else {
+    console.error("Error removing course:", error);
+    setError('Failed to remove course.'); 
   }
+}
 };

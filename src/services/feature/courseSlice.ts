@@ -2,6 +2,7 @@
 import { Course } from '@/libs/fitness';
 import { PayloadAction,createSlice } from '@reduxjs/toolkit';
 import { WorkoutType } from '../courses/courseApi';
+import { RootState } from '@/store/store';
 
 export type initialStateType = {
   currentCourse: Course | null;
@@ -113,4 +114,4 @@ export const {
   loadStateFromLocalStorage
 } = courseSlice.actions;
 export const courseSliceReducer = courseSlice.reducer;
-export const selectExerciseProgress = (state: any) => state.courses.exerciseProgress;
+export const selectExerciseProgress = (state: RootState) => state.courses.exerciseProgress;

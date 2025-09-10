@@ -6,11 +6,10 @@ import maskImage from '../../../../public/image/Maskgroup.svg';
 import masklineImage from '../../../../public/image/Maskgroupline.png';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { addCourseToUser, getCourseById, getUserProfile, removeCourseFromUser } from '@/services/courses/courseApi';
+import { getCourseById } from '@/services/courses/courseApi';
 import { getSkillCardImage, getSkillCardImageMini } from '@/helpers/image';
 import { Course } from '@/libs/fitness';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { addFavoriteCourse, removeFavoriteCourse } from '@/services/feature/courseSlice';
 import {  setUserData, UserData } from '@/services/feature/authSlice';
 import ModalLayout from '@/app/auth/layout';
 import { handleAddCourse, handleRemoveCourse } from '@/helpers/coursehelpers/courseActions';
@@ -62,8 +61,12 @@ useEffect(() => {
                 } else {
                     setError('Invalid course ID');
                 }
-            } catch (error: any) {
-                setError(error.message);
+          } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError("Произошла неизвестная ошибка при загрузке курса");
+                }
             } finally {
                 setLoading(false);
             }
