@@ -11,7 +11,7 @@ import { getSkillCardImage, getSkillCardImageMini } from '@/helpers/image';
 import { Course } from '@/libs/fitness';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import {  setUserData, UserData } from '@/services/feature/authSlice';
-import ModalLayout from '@/app/auth/layout';
+import AuthModal from '@/app/auth/layout';
 import { handleAddCourse, handleRemoveCourse } from '@/helpers/coursehelpers/courseActions';
 
 
@@ -226,7 +226,7 @@ const handleUserLoggedIn = (userData: UserData) => {
                 </div> 
             </div>
              <div className={styles.backgroundImages}></div>
-         <ModalLayout
+         <AuthModal
   isOpen={isModalOpen}
   onClose={handleCloseModal}
   onUserRegistered={handleUserRegistered}
