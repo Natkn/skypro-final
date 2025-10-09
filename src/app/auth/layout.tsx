@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import styles from "./signin/modal.module.css";
 import Image from "next/image";
 import logo from "../../../public/image/logo.svg";
@@ -13,6 +13,7 @@ interface ModalLayoutProps {
   onClose: () => void;
   onUserRegistered: (user: UserData) => void;
   onUserLoggedIn: (user: UserData) => void;
+   children: ReactNode;
 }
 
 enum ModalMode {
