@@ -12,7 +12,7 @@ export interface ModalProfileProps {
     onLogout: () => void;
 }
 
-export const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, username, email, onLogout }) => {
+export const ModalProfile: React.FC<ModalProfileProps> = ({ isOpen, onClose, email, onLogout }) => {
     const modalRef = useRef<HTMLDivElement>(null);
      const router = useRouter();
 const { userData } = useAppSelector((state) => state.auth);

@@ -142,13 +142,6 @@ export default function ExerciseModal({ courseId, workoutId, isOpen, onClose }: 
 
 
 
-
-
-
-
-
-
-
   return (
     <div className={styles.workModalOverlay}>
       <div className={styles.workModalContent}>
