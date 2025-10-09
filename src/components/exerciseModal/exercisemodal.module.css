@@ -1,0 +1,260 @@
+ .workModalOverlay {
+   position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  z-index: 1000;
+ 
+}
+
+.workModalContent { position: relative; 
+background-color: white;
+z-index: 1001;
+width: 426px;
+border-radius: 30px;
+padding: 40px;
+}
+
+.scrollContainer {
+  width: 346px;  
+  height: 346px;
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  padding-right: 20px;
+  box-sizing: border-box;
+  display: flex
+;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 34px;
+        gap: 20px;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 10px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+.modalTitle{
+width: 346px;
+height: 35px;
+font-family: 'Roboto';
+font-weight: 400;
+font-size: 32px;
+line-height: 110.00000000000001%;
+letter-spacing: 0%;
+margin-bottom: 48px;
+}
+
+.workoutList{
+    width: 354px; 
+  list-style: none;
+      display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 10px;
+    margin-bottom: 34px;
+}
+
+
+
+.workoutItem{
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+   border-bottom: 1px solid #C4C4C4;
+}
+
+.workoutLeft{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.workoutText{
+      display: flex;
+        align-items: center;
+    gap: 10px;
+}
+
+.workoutText::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+ border: 1px solid #000000;
+  margin-right: 10px;
+  background-size: cover;
+  background-position: center;
+   vertical-align: middle;
+}
+
+.checkboxInput { 
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin-right: 10px; 
+}
+
+.checkboxInput:checked + .workoutText::before {
+  background-image: url('/image/yesIcon.svg'); 
+  border: none; 
+  background-color: #ffffff; 
+}
+
+
+.workouttextBox{
+ display: flex
+;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.workoutName{
+font-weight: 400;
+font-style: Regular;
+font-size: 24px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+
+}
+
+.workoutDescription{
+font-family: Roboto;
+font-weight: 400;
+font-style: Regular;
+font-size: 16px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+ margin-bottom: 10px;
+}
+
+.startButton{
+ width: 346px;
+height: 52px;
+border-radius: 46px;
+opacity: 1;
+padding-top: 16px;
+padding-right: 26px;
+padding-bottom: 16px;
+padding-left: 26px;
+background: #BCEC30;
+border-style: none;
+font-weight: 400;
+font-size: 18px;
+line-height: 110.00000000000001%;
+}
+.startButton:hover{
+background: #C6FF00;
+
+}
+
+.exerciseLabel{
+  font-family: Roboto;
+font-weight: 400;
+font-size: 18px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+}
+
+.exerciseItem{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.exerciseInput{
+  width: 320px;
+height: 52px;
+border-radius: 8px;
+gap: 10px;
+opacity: 1;
+border-width: 1px;
+padding-top: 16px;
+padding-right: 18px;
+padding-bottom: 16px;
+padding-left: 18px;
+
+}
+.exerciseInput::-webkit-outer-spin-button,
+.exerciseInput::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+
+
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+  
+.workoutName{
+  font-size: 24px;
+}
+
+
+ .workModalOverlay {
+   position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.workModalContent { position: relative; 
+background-color: white;
+z-index: 1001;
+width: 343px;
+border-radius: 30px;
+padding: 40px;
+}
+
+.modalTitle{
+  margin-bottom:24px;
+}
+
+.exerciseLabel{
+  font-size: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

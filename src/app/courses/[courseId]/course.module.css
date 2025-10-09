@@ -1,0 +1,376 @@
+
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+
+
+.suggestionsContainer{
+  box-sizing: border-box;
+  width: 1160px;
+  margin-top: 60px;
+}
+.title {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 110%; 
+  letter-spacing: 0;
+  margin-bottom: 40px;
+  width: 810px;
+}
+
+.suggestionsBlock {
+  display: flex;
+  flex-direction: row;
+ gap: 17px;
+  margin-bottom: 60px;
+}
+
+.suggestionOne {
+  border-radius: 28px;
+  opacity: 1;
+  padding: 20px;
+  background: linear-gradient(115.81deg, #151720 34.98%, #1e212e 91.5%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+gap: 25px;
+
+}
+.suggestionTwo {
+  border-radius: 28px;
+  opacity: 1;
+  padding: 20px;
+  background: linear-gradient(115.81deg, #151720 34.98%, #1e212e 91.5%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+width:  431px;
+gap: 25px;
+}
+.suggestionThree {
+  border-radius: 28px;
+  opacity: 1;
+  padding: 20px;
+  background: linear-gradient(115.81deg, #151720 34.98%, #1e212e 91.5%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+ width:  327px;
+gap: 25px;
+}
+
+.suggestionNumber {
+  font-weight: 500;
+  font-size: 75px;
+  line-height: 135%;
+  color: rgba(188, 236, 48, 1);
+}
+
+.suggestionText {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 110%;
+  width: 268px;
+  color: white;
+}
+
+.suggestiontextTwo{
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 110%;
+  width: 323px;
+  color: white;
+}
+
+.directionsBlock {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.directionsBox{
+  width: 1160px;
+gap: 34px;
+opacity: 1;
+border-radius: 28px;
+padding: 30px;
+background: #BCEC30;
+  display: grid;
+    grid-template-columns: repeat(3, 1fr);
+gap:34px;
+}
+
+.directions {
+ display: flex;
+flex-direction: row;
+align-items: flex-start;
+ gap: 8px;
+font-weight: 400;
+font-style: Regular;
+font-size: 24px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+
+}
+
+.courseImage{
+    margin-bottom: 4px;
+}
+
+.footerCourseDiscription {
+  position: relative;
+  width: 1160px;
+height: 486px;
+  margin-top: 98px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+ align-items: center;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 30px;
+  box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
+   z-index: 1;
+   padding: 40px;
+}
+
+.footerContent {
+display: flex;
+   flex-direction: column;
+   width: 437px;
+   height: 406px;
+  gap: 28px;
+   z-index: 20;
+}
+
+.footerTitle {
+font-weight: 500;
+font-size: 60px;
+line-height: 100%;
+letter-spacing: 0px;
+vertical-align: middle;
+width: 398px;
+
+}
+
+.footerList {
+  color: rgba(0, 0, 0, 1);
+font-weight: 400;
+font-size: 24px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+vertical-align: middle;
+opacity: 0.6;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+     margin-left: 36px; 
+}
+
+
+.footerImage {
+  position: absolute; 
+  left: 50%; 
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.loginButton{
+opacity: 1;
+border-radius: 46px;
+border-color: #BCEC30;
+padding-top: 16px;
+padding-right: 26px;
+padding-bottom: 16px;
+padding-left: 26px; 
+background: #BCEC30; 
+font-weight: 400;
+font-size: 18px;
+line-height: 110.00000000000001%;
+letter-spacing: 0px;
+text-align: center;
+cursor: pointer;
+  border-style: none;
+width: 437px;
+z-index: 15;
+}
+
+
+
+
+.maskImageWrapper {
+  position: absolute;
+  top: -100px;
+    left: 24px;
+  z-index: 3;
+  display: flex;
+  justify-content: center; 
+}
+
+
+.masklineImageWrapper {
+position: absolute;
+
+    z-index: 1;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    right: 0px;
+}
+
+.footerImage .maskImageWrapper img {
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover;
+}
+
+.footerImage .masklineImageWrapper img {
+  position: static; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.desktopImage {
+  display: block; 
+}
+
+.mobileImage {
+  display: none; 
+}
+
+@media screen and (min-width: 357px) and (max-width: 768px) {
+  
+  .title{
+font-weight: 500;
+        font-size: 24px;
+        margin-bottom: 28px;
+        width: 300px;
+  }
+
+.suggestionsBlock{
+  display: flex;
+    flex-direction: column;
+    margin-bottom: 34px;
+}
+
+.suggestionsContainer{
+  margin-top: 42px;
+  width: 345px;
+}
+
+
+  .suggestionOne{
+    width: 343px;
+  }
+
+  .directionsBox{
+     width: 343px;
+    display: grid
+;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 24px;
+    padding: 30px;
+   
+  }
+
+.directions{
+   font-size: 18px;
+   height: 26px;
+   gap: 14px;
+}
+
+.footerCourseDiscription{
+ position: relative;
+  z-index: 11;
+  margin-top: 154px;
+   width: 343px;
+  height: 412px;
+   padding: 30px;
+
+}
+
+.footerImage {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; 
+  overflow: hidden; 
+}
+
+
+
+.backgroundImages {
+background-image:url('../../../../public/image/manMiniline.svg'); 
+width: 376px;
+ height: 400px;
+  top: -726px;
+ position: relative;
+ left: -16px;
+  }
+
+
+.desktopImage{
+  display: none;
+}
+
+.footerTitle{
+font-weight: 500;
+font-size: 32px;
+ width: 226px;
+}
+
+.suggestionText{
+  font-size: 18px;
+}
+
+.footerContent{
+  
+   margin-top: 8px;
+   height: 352px;
+}
+
+
+.footerList{
+  width: 283px;
+font-size: 18px;
+margin-left: 26px;
+    gap: 10px;
+
+}
+.loginButton{
+   width: 283px;
+   font-size: 16px;
+}
+
+
+  .desktopImage {
+    display: none; 
+  }
+
+  .mobileImage {
+    display: block; 
+  }
+
+.Imagemini{
+  border-radius: 30px;
+}
+
+
+
+
+
+
+}

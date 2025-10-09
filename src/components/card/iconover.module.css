@@ -1,0 +1,15 @@
+.IconOver {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  padding: 5px;
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.cardDetail svg { 
+  margin-right: 5px; 
+  vertical-align: middle;
+}
