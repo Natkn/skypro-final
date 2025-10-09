@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import styles from "./signin/modal.module.css";
 import Image from "next/image";
 import logo from "../../../public/image/logo.svg";
@@ -13,7 +13,6 @@ interface ModalLayoutProps {
   onClose: () => void;
   onUserRegistered: (user: UserData) => void;
   onUserLoggedIn: (user: UserData) => void;
-   children: ReactNode;
 }
 
 enum ModalMode {
@@ -29,7 +28,9 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
 }) => {
   const [modalMode, setModalMode] = useState<ModalMode>(ModalMode.LOGIN);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
