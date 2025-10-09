@@ -11,8 +11,9 @@ import { getSkillCardImage, getSkillCardImageMini } from '@/helpers/image';
 import { Course } from '@/libs/fitness';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import {  setUserData, UserData } from '@/services/feature/authSlice';
-import AuthModal from '@/app/auth/layout';
+
 import { handleAddCourse, handleRemoveCourse } from '@/helpers/coursehelpers/courseActions';
+import { AuthModal } from '@/app/auth/layout';
 
 
 interface CourseDetailPageProps {

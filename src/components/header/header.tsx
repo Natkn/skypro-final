@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import ModalProfile from "../modalProfile/modalprofile";
 import { clearUserData, setUserData, UserData } from "@/services/feature/authSlice";
-import AuthModal from "@/app/auth/layout";
+import { AuthModal } from "@/app/auth/layout";
+
 
 
 
@@ -119,7 +120,7 @@ const handleUserLoggedIn = (userData: UserData) => {
       </nav>
 
     <AuthModal
-  isOpen={isModalOpen}
+      isOpen={isModalOpen}
    onClose={handleCloseModal}
   onUserRegistered={handleUserRegistered}
   onUserLoggedIn={handleUserLoggedIn}

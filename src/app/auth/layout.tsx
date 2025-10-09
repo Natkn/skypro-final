@@ -21,7 +21,7 @@ enum ModalMode {
 }
 
 
-const AuthModal: React.FC<AuthModalProps> = ({
+export const AuthModal: React.FC<AuthModalProps> = ({
   isOpen, 
   onClose,
   onUserRegistered,
@@ -69,4 +69,4 @@ const AuthModal: React.FC<AuthModalProps> = ({
   );
 };
 
-export default AuthModal;
+
