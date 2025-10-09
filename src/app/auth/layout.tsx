@@ -8,7 +8,7 @@ import { UserData } from "@/services/feature/authSlice";
 import SignIn from "./signin/page";
 import SignUp from "./signup/page";
 
-interface ModalLayoutProps {
+interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUserRegistered: (user: UserData) => void;
@@ -20,35 +20,46 @@ enum ModalMode {
   REGISTER,
 }
 
-const ModalLayout: React.FC<ModalLayoutProps> = ({
-  isOpen,
+
+const AuthModal: React.FC<AuthModalProps> = ({
+  isOpen, // Теперь мы используем этот пропс, чтобы решить, рендериться ли
   onClose,
   onUserRegistered,
   onUserLoggedIn,
 }) => {
   const [modalMode, setModalMode] = useState<ModalMode>(ModalMode.LOGIN);
 
+  // Если модальное окно закрыто (isOpen === false), возвращаем null
   if (!isOpen) {
     return null;
   }
 
+  // В остальном логика остается прежней, но все внутренние хэндлеры используют onClose
+  const handleSwitchToRegister = () => setModalMode(ModalMode.REGISTER);
+  const handleSwitchToLogin = () => setModalMode(ModalMode.LOGIN);
+
+
+   if (!isOpen) {
+    return null; // Модальное окно не рендерится, если не открыто
+  }
+
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.modalCloseButton} onClick={onClose}>
         
         </button>
         <Image src={logo} alt="Logo" width={220} height={35} priority />
         {modalMode === ModalMode.LOGIN && (
           <SignIn
-            onSwitchToRegister={() => setModalMode(ModalMode.REGISTER)}
+            onSwitchToRegister={handleSwitchToRegister}
             onUserLoggedIn={onUserLoggedIn}
             onClose={onClose}
           />
         )}
         {modalMode === ModalMode.REGISTER && (
           <SignUp
-            onSwitchToLogin={() => setModalMode(ModalMode.LOGIN)}
+           onSwitchToLogin={handleSwitchToLogin}
             onUserRegistered={onUserRegistered}
             onClose={onClose}
           />
@@ -58,4 +69,4 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
   );
 };
 
-export default ModalLayout;
+export default AuthModal;
