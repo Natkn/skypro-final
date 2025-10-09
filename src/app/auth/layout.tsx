@@ -22,25 +22,25 @@ enum ModalMode {
 
 
 const AuthModal: React.FC<AuthModalProps> = ({
-  isOpen, // Теперь мы используем этот пропс, чтобы решить, рендериться ли
+  isOpen, 
   onClose,
   onUserRegistered,
   onUserLoggedIn,
 }) => {
   const [modalMode, setModalMode] = useState<ModalMode>(ModalMode.LOGIN);
 
-  // Если модальное окно закрыто (isOpen === false), возвращаем null
+  
   if (!isOpen) {
     return null;
   }
 
-  // В остальном логика остается прежней, но все внутренние хэндлеры используют onClose
+  
   const handleSwitchToRegister = () => setModalMode(ModalMode.REGISTER);
   const handleSwitchToLogin = () => setModalMode(ModalMode.LOGIN);
 
 
    if (!isOpen) {
-    return null; // Модальное окно не рендерится, если не открыто
+    return null; 
   }
 
   return (
